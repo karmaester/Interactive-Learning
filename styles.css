@@ -98,3 +98,11 @@ svg:hover {
 .reduce {
 
 }
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}

@@ -1,12 +1,12 @@
 let submitBtn = document.querySelector('#submit');
 
 const lesson1 = {
-    question: "What's your name?",
-    options: [
-        "This is the first option",
-        "Jose",
-        "Martin"
-    ],
+    question: "Where are you from?",
+    options: {
+        invalid1: "This is the incorrect option1",
+        valid: "This is the correct option",
+        invalid2: "This is the incorrect option2"
+    },
     dialog: {
         true: "Nice to meet you",
         false: "Is that really your Name?"
@@ -17,45 +17,6 @@ const lesson1 = {
     }
 }
 
-// const selectedOption = async () => {
-//     let selected = ''
-//     let options = [...document.querySelectorAll('#option')];
-//     options.forEach(opt => {
-//         opt.addEventListener('click', e => {
-//             selected = e.target.innerText
-//         })
-//     })
-//     return selected
-// }
-
-
-const selectedAnswer = () => {
-    let selected = ''
-    let options = [...document.querySelectorAll('#option')];
-    options.forEach(opt => {
-        opt.addEventListener('click', e => {
-            selected = e.target.innerText
-            answerValidation(selected, lesson1)
-        })
-    })
-
-}
-
-selectedAnswer()
-
-const answerValidation = (answer, lesson) => {
-    if (answer == lesson.options[0]) {
-        console.log('hello')
-    } else if (answer == lesson.options[1]) {
-        console.log('hello2')
-    } else if (answer == lesson.options[2]) {
-        console.log('hello3')
-    } else {
-        console.log('no')
-    }
-
-}
-
 const changeQuestion = (question) => {
     let questionContainer = document.querySelector('#questionContainer');
     questionContainer.textContent = ''
@@ -63,11 +24,61 @@ const changeQuestion = (question) => {
 }
 
 //display the possible answers
-const changeOption = (newOptions) => {
+const changeOption = () => {
+    changeQuestion(lesson1.question)
     let options = [...document.querySelectorAll('#option')];
-    options.forEach((el, idx) => {
-        el.textContent = ''
-        el.textContent = newOptions[idx]
-    })
+    let counter = 0
+    for (let [key, value] of Object.entries(lesson1.options)) {
+        options[counter].textContent = value
+        counter += 1
+    }
 };
+
+const displayHint = (ans) => {
+    let hintContainer = document.querySelector('#hint-container')
+    console.log(hintContainer)
+    hintContainer.textContent = ''
+    if (ans == "invalid1") {
+        // hintContainer.classList.remove('hide');
+        hintContainer.classList.remove("hide");
+        hintContainer.textContent = lesson1.hint.hint1
+    } if (ans == "invalid2") {
+        hintContainer.classList.remove('hide');
+        hintContainer.textContent = lesson1.hint.hint2
+    } else {
+        hintContainer.classList.add('hide');
+    }
+}
+
+displayHint('invalid1')
+
+const selectedAnswer = () => {
+    changeOption()
+    let selected = ''
+    let options = [...document.querySelectorAll('#option')];
+    options.forEach(opt => {
+        opt.addEventListener('click', e => {
+            selected = e.target.innerText
+            answerValidation(selected, lesson1)
+            // displayHint()
+        })
+    })
+}
+
+selectedAnswer()
+
+const answerValidation = (answer, lesson) => {
+    switch (answer.toUpperCase()) {
+        case lesson.options.invalid1.toUpperCase():
+            console.log('invalid1')
+            break;
+        case lesson.options.invalid2.toUpperCase():
+            console.log('invalid2')
+            break;
+        case lesson.options.valid.toUpperCase():
+            console.log('correct')
+            break;
+    }
+}
+
 
