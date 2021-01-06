@@ -36,13 +36,11 @@ const changeOption = () => {
 
 const displayHint = (ans) => {
     let hintContainer = document.querySelector('#hint-container')
-    console.log(hintContainer)
     hintContainer.textContent = ''
     if (ans == "invalid1") {
-        // hintContainer.classList.remove('hide');
-        hintContainer.classList.remove("hide");
+        hintContainer.classList.remove('hide');
         hintContainer.textContent = lesson1.hint.hint1
-    } if (ans == "invalid2") {
+    } else if (ans == "invalid2") {
         hintContainer.classList.remove('hide');
         hintContainer.textContent = lesson1.hint.hint2
     } else {
@@ -50,7 +48,15 @@ const displayHint = (ans) => {
     }
 }
 
-displayHint('invalid1')
+const displayDialog = (ans) => {
+    let dialogContainer = document.querySelector('#dialog-container')
+    dialogContainer.textContent = ''
+    if (ans == "correct") {
+        dialogContainer.textContent = lesson1.dialog.true
+    } else {
+        dialogContainer.textContent = lesson1.dialog.false
+    }
+}
 
 const selectedAnswer = () => {
     changeOption()
@@ -59,8 +65,9 @@ const selectedAnswer = () => {
     options.forEach(opt => {
         opt.addEventListener('click', e => {
             selected = e.target.innerText
-            answerValidation(selected, lesson1)
-            // displayHint()
+            let validatedAnswer = answerValidation(selected, lesson1)
+            displayDialog(validatedAnswer)
+            displayHint(validatedAnswer)
         })
     })
 }
@@ -70,14 +77,11 @@ selectedAnswer()
 const answerValidation = (answer, lesson) => {
     switch (answer.toUpperCase()) {
         case lesson.options.invalid1.toUpperCase():
-            console.log('invalid1')
-            break;
+            return 'invalid1'
         case lesson.options.invalid2.toUpperCase():
-            console.log('invalid2')
-            break;
+            return 'invalid2'
         case lesson.options.valid.toUpperCase():
-            console.log('correct')
-            break;
+            return 'correct'
     }
 }
 
