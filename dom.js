@@ -1,10 +1,10 @@
-let counter = 1
+let counter = 0
 
 const module = [
     {
         question: "Where are you from?",
         options: {
-            invalid1: "This is the incorrect option1",
+            invalid1: "This is jaja the incorrect option1",
             valid: "This is the correct option",
             invalid2: "This is the incorrect option2"
         },
@@ -31,6 +31,22 @@ const module = [
         hint: {
             hint1: 'Test2 hint 1',
             hint2: 'Test2 hint 2'
+        }
+    },
+    {
+        question: "test3?",
+        options: {
+            invalid1: "This is the incorrect option1",
+            valid: "This is the correct option",
+            invalid2: "This is the incorrect option2"
+        },
+        dialog: {
+            true: "test3 true dialog",
+            false: "test3 false dialog"
+        },
+        hint: {
+            hint1: 'Test3 hint 1',
+            hint2: 'Test3 hint 2'
         }
     }
 ]
@@ -63,6 +79,8 @@ const displayHint = (ans, lesson) => {
         hintContainer.textContent = lesson.hint.hint2
     } else {
         hintContainer.classList.add('hide');
+        let buttonCont = document.querySelector('#continue')
+        buttonCont.classList.remove('d-none')
     }
 }
 
@@ -105,4 +123,13 @@ const answerValidation = (answer, lesson) => {
     }
 }
 
+const continueNext = () => {
+    let buttonCont = document.querySelector('#continue')
+    buttonCont.addEventListener('click', () => {
+        counter += 1
+        selectedAnswer()
+        buttonCont.classList.add('d-none')
+    })
+}
 
+continueNext()
