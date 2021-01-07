@@ -1,4 +1,4 @@
-let submitBtn = document.querySelector('#submit');
+let counter = 1
 
 const module = [
     {
@@ -15,6 +15,22 @@ const module = [
         hint: {
             hint1: 'Your name is not Jose.',
             hint2: 'Your name is not Martin.'
+        }
+    },
+    {
+        question: "test2?",
+        options: {
+            invalid1: "This is the incorrect option1",
+            valid: "This is the correct option",
+            invalid2: "This is the incorrect option2"
+        },
+        dialog: {
+            true: "test2 true dialog",
+            false: "test2 false dialog"
+        },
+        hint: {
+            hint1: 'Test2 hint 1',
+            hint2: 'Test2 hint 2'
         }
     }
 ]
@@ -60,7 +76,7 @@ const displayDialog = (ans, lesson) => {
     }
 }
 
-let counter = 0
+
 
 const selectedAnswer = () => {
     changeOption(counter)
