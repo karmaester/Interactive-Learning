@@ -81,6 +81,7 @@ const displayHint = (ans, lesson) => {
         hintContainer.classList.add('hide');
         let buttonCont = document.querySelector('#continue')
         buttonCont.classList.remove('d-none')
+        showModal()
     }
 }
 
@@ -129,7 +130,13 @@ const continueNext = () => {
         counter += 1
         selectedAnswer()
         buttonCont.classList.add('d-none')
+        showModal()
     })
 }
 
 continueNext()
+
+const showModal = () => {
+    const continueContainer = document.querySelector('.continue-container')
+    continueContainer.classList.toggle('show-modal')
+}
