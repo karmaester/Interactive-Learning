@@ -20,7 +20,8 @@ svg:hover {
   padding: 1rem !important;
 }
 
-.btn p {
+.btn p,
+.thought {
   font-size: clamp(1rem, 2.5vw, 2rem);
 }
 
@@ -53,7 +54,7 @@ svg {
   font-family: sans-serif;
   font-size: clamp(1rem, 2.5vw, 2rem);
   line-height: 24px;
-  width: 300px;
+  width: 100%;
   height: fit-content;
   background: #fff;
   border-radius: 40px;
@@ -144,12 +145,58 @@ svg {
   transition: transform 0.5s;
 }
 
-/* .wrap-her {
-  position: relative;
-} */
+.characters {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
 
-.wrap-her * + * {
+.wrap-her,
+.wrap-him {
+  position: relative;
+}
+
+.wrap-her,
+.wrap-him {
+  /* background: steelblue; */
+  height: 25vw;
+}
+
+@media (min-width: 460px) {
+  .wrap-her,
+  .wrap-him {
+    height: 30vw;
+  }
+}
+
+@media (min-width: 600px) {
+  .wrap-her,
+  .wrap-him {
+    height: 25vw;
+  }
+}
+
+@media (min-width: 720px) {
+  .wrap-her,
+  .wrap-him {
+    height: 33vw;
+  }
+}
+
+@media (min-width: 1400px) {
+  .wrap-her,
+  .wrap-him {
+    height: 25vw;
+  }
+}
+
+@media (min-width: 1600px) {
+  .wrap-her,
+  .wrap-him {
+    height: 23vw;
+  }
+}
+
+.wrap-her > div,
+.wrap-him > div {
   position: absolute;
-  top: 0;
-  left: 0;
 }
