@@ -59,6 +59,7 @@ svg {
   font-size: clamp(1rem, 2.5vw, 2rem);
   line-height: 24px;
   width: 100%;
+  max-width: 100%;
   height: fit-content;
   background: #fff;
   border-radius: 40px;
@@ -151,7 +152,7 @@ svg {
 
 .characters {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .wrap-her,
@@ -163,6 +164,10 @@ svg {
 .wrap-him {
   /* background: steelblue; */
   height: 25vw;
+}
+
+.wrap-her > .her {
+  z-index: 1;
 }
 
 @media (min-width: 460px) {
@@ -203,4 +208,19 @@ svg {
 .wrap-her > div,
 .wrap-him > div {
   position: absolute;
+}
+
+.wrap-her .smile,
+.wrap-him .smile {
+  z-index: 100;
+}
+
+.wrap-her .open-mouth,
+.wrap-him .open-mouth {
+  z-index: 1000;
+}
+
+.wrap-her .close-eyes,
+.wrap-him .close-eyes {
+  z-index: 10000;
 }

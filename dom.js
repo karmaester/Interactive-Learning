@@ -1,4 +1,4 @@
-let counter = 0
+let counter = 2
 
 const module = [
     {
@@ -35,6 +35,22 @@ const module = [
     },
     {
         question: "test3?",
+        options: {
+            invalid1: "This is the incorrect option1",
+            valid: "This is the correct option",
+            invalid2: "This is the incorrect option2"
+        },
+        dialog: {
+            true: "test3 true dialog",
+            false: "test3 false dialog"
+        },
+        hint: {
+            hint1: 'Test3 hint 1',
+            hint2: 'Test3 hint 2'
+        }
+    },
+    {
+        question: "test4?",
         options: {
             invalid1: "This is the incorrect option1",
             valid: "This is the correct option",
@@ -89,13 +105,11 @@ const displayDialog = (ans, lesson) => {
     let dialogContainer = document.querySelector('#dialog-container')
     dialogContainer.textContent = ''
     if (ans == "correct") {
-        dialogContainer.textContent = lesson.dialog.true
+        displayLetterByLetter( dialogContainer, lesson.dialog.true, 200)
     } else {
-        dialogContainer.textContent = lesson.dialog.false
+        displayLetterByLetter( dialogContainer, lesson.dialog.false, 200)
     }
 }
-
-
 
 const selectedAnswer = () => {
     changeOption(counter)
@@ -107,6 +121,7 @@ const selectedAnswer = () => {
             let validatedAnswer = answerValidation(selected, module[counter])
             displayDialog(validatedAnswer, module[counter])
             displayHint(validatedAnswer, module[counter])
+            console.log('here!!!')
         })
     })
 }
@@ -143,24 +158,37 @@ const showModal = () => {
 
 //characters talk
 
-// const talk = () => {
-//     const herMotion = [... document.querySelectorAll('.characters .her')]
-//     let n = 0
-//     while (n < 10) {
-//         if(n % 2 == 0) {
-//             setTimeout(function(){  
-//                 herMotion[0].classList.remove('d-none')
-//                 herMotion[2].classList.add('d-none')
-                
-//             }, 0.5);
-//             n++
+const displayLetterByLetter = (destination, message, speed ) => {
+  let i = 0;
+  let interval = setInterval(() => {
+      destination.innerHTML += message.charAt(i);
+    //   if(i % 2 == 0 ) {
+    //         talk('.wrap-him');
+    //     }
+        i++;
+    if(i > message.length) {
+        // closeMouth('.wrap-him')
+        // blink('.wrap-him')
+      clearInterval(interval);
+    }
+  }, speed)
+}
 
-//         } else {
-//             herMotion[2].classList.remove('d-none')
-//             herMotion[2].classList.add('d-none')
-//             n++
-//         }
-//     }
-    
-// }
+const talk = (person) => {
+    const mouth = document.querySelector(`${person} .talk`)
+    mouth.classList.toggle('open-mouth');
+}
 
+const closeMouth = (person) => {
+    const mouth = document.querySelector(`${person} .talk`)
+    mouth.classList.remove('open-mouth');
+}
+
+const blink = (person) => {
+    const mouth = document.querySelector(`${person} .blink`)
+    const interval = setInterval(() => {
+        mouth.classList.toggle('close-eyes');
+        clearInterval(interval)
+    }, 20);
+    mouth.classList.toggle('close-eyes');
+}
