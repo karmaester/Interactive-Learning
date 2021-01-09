@@ -2,6 +2,10 @@
   background: #0a1438;
 }
 
+header {
+  border-radius: 0 0 50% 50% / 15%;
+}
+
 .main {
   position: relative;
   background: hsla(194, 74%, 92%, 0.69);
