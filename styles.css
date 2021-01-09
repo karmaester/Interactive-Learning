@@ -143,3 +143,13 @@ svg {
   z-index: 10;
   transition: transform 0.5s;
 }
+
+/* .wrap-her {
+  position: relative;
+} */
+
+.wrap-her * + * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

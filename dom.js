@@ -140,3 +140,27 @@ const showModal = () => {
     const continueContainer = document.querySelector('.continue-container')
     continueContainer.classList.toggle('show-modal')
 }
+
+//characters talk
+
+// const talk = () => {
+//     const herMotion = [... document.querySelectorAll('.characters .her')]
+//     let n = 0
+//     while (n < 10) {
+//         if(n % 2 == 0) {
+//             setTimeout(function(){  
+//                 herMotion[0].classList.remove('d-none')
+//                 herMotion[2].classList.add('d-none')
+                
+//             }, 0.5);
+//             n++
+
+//         } else {
+//             herMotion[2].classList.remove('d-none')
+//             herMotion[2].classList.add('d-none')
+//             n++
+//         }
+//     }
+    
+// }
+
