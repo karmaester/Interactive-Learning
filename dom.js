@@ -1,4 +1,4 @@
-let counter = 2
+let counter = 0
 
 const module = [
     {
@@ -20,9 +20,9 @@ const module = [
     {
         question: "test2?",
         options: {
-            invalid1: "This is the incorrect option1",
-            valid: "This is the correct option",
-            invalid2: "This is the incorrect option2"
+            invalid1: "This is the incorrect option1 from 2",
+            valid: "This is the correct option from 2",
+            invalid2: "This is the incorrect option2 from 2"
         },
         dialog: {
             true: "test2 true dialog",
@@ -36,9 +36,9 @@ const module = [
     {
         question: "test3?",
         options: {
-            invalid1: "This is the incorrect option1",
-            valid: "This is the correct option",
-            invalid2: "This is the incorrect option2"
+            invalid1: "This is the incorrect option1 from 3",
+            valid: "This is the correct option from 3",
+            invalid2: "This is the incorrect option2 from 3"
         },
         dialog: {
             true: "test3 true dialog",
@@ -52,17 +52,17 @@ const module = [
     {
         question: "test4?",
         options: {
-            invalid1: "This is the incorrect option1",
-            valid: "This is the correct option",
-            invalid2: "This is the incorrect option2"
+            invalid1: "This is the incorrect option1 from 4",
+            valid: "This is the correct option from 4",
+            invalid2: "This is the incorrect option2 from 4"
         },
         dialog: {
-            true: "test3 true dialog",
-            false: "test3 false dialog"
+            true: "test4 true dialog",
+            false: "test4 false dialog"
         },
         hint: {
-            hint1: 'Test3 hint 1',
-            hint2: 'Test3 hint 2'
+            hint1: 'Test4 hint 1',
+            hint2: 'Test4 hint 2'
         }
     }
 ]
@@ -105,9 +105,9 @@ const displayDialog = (ans, lesson) => {
     let dialogContainer = document.querySelector('#dialog-container')
     dialogContainer.textContent = ''
     if (ans == "correct") {
-        displayLetterByLetter( dialogContainer, lesson.dialog.true, 200)
+        displayLetterByLetter(dialogContainer, lesson.dialog.true, 200)
     } else {
-        displayLetterByLetter( dialogContainer, lesson.dialog.false, 200)
+        displayLetterByLetter(dialogContainer, lesson.dialog.false, 200)
     }
 }
 
@@ -118,15 +118,16 @@ const selectedAnswer = () => {
     options.forEach(opt => {
         opt.addEventListener('click', e => {
             selected = e.target.innerText
+            console.log(selected)
             let validatedAnswer = answerValidation(selected, module[counter])
+            console.log(validatedAnswer)
+            console.log(module[counter].options.invalid1.toUpperCase())
             displayDialog(validatedAnswer, module[counter])
             displayHint(validatedAnswer, module[counter])
             console.log('here!!!')
         })
     })
 }
-
-selectedAnswer()
 
 const answerValidation = (answer, lesson) => {
     switch (answer.toUpperCase()) {
@@ -143,13 +144,16 @@ const continueNext = () => {
     let buttonCont = document.querySelector('#continue')
     buttonCont.addEventListener('click', () => {
         counter += 1
-        selectedAnswer()
         buttonCont.classList.add('d-none')
         showModal()
+        changeOption(counter);
     })
 }
 
-continueNext()
+window.addEventListener('load', () => {
+    continueNext();
+    selectedAnswer();
+})
 
 const showModal = () => {
     const continueContainer = document.querySelector('.continue-container')
@@ -158,20 +162,20 @@ const showModal = () => {
 
 //characters talk
 
-const displayLetterByLetter = (destination, message, speed ) => {
-  let i = 0;
-  let interval = setInterval(() => {
-      destination.innerHTML += message.charAt(i);
-    //   if(i % 2 == 0 ) {
-    //         talk('.wrap-him');
-    //     }
+const displayLetterByLetter = (destination, message, speed) => {
+    let i = 0;
+    let interval = setInterval(() => {
+        destination.innerHTML += message.charAt(i);
+        if (i % 2 == 0) {
+            talk('.wrap-him');
+        }
         i++;
-    if(i > message.length) {
-        // closeMouth('.wrap-him')
-        // blink('.wrap-him')
-      clearInterval(interval);
-    }
-  }, speed)
+        if (i > message.length) {
+            closeMouth('.wrap-him')
+            blink('.wrap-him')
+            clearInterval(interval);
+        }
+    }, speed)
 }
 
 const talk = (person) => {
