@@ -105,9 +105,9 @@ const displayDialog = (ans, lesson) => {
     let dialogContainer = document.querySelector('#dialog-container')
     dialogContainer.textContent = ''
     if (ans == "correct") {
-        displayLetterByLetter(dialogContainer, lesson.dialog.true, 200)
+        displayLetterByLetter(dialogContainer, lesson.dialog.true, 100)
     } else {
-        displayLetterByLetter(dialogContainer, lesson.dialog.false, 200)
+        displayLetterByLetter(dialogContainer, lesson.dialog.false, 100)
     }
 }
 
@@ -118,13 +118,9 @@ const selectedAnswer = () => {
     options.forEach(opt => {
         opt.addEventListener('click', e => {
             selected = e.target.innerText
-            console.log(selected)
             let validatedAnswer = answerValidation(selected, module[counter])
-            console.log(validatedAnswer)
-            console.log(module[counter].options.invalid1.toUpperCase())
             displayDialog(validatedAnswer, module[counter])
             displayHint(validatedAnswer, module[counter])
-            console.log('here!!!')
         })
     })
 }
@@ -167,12 +163,12 @@ const displayLetterByLetter = (destination, message, speed) => {
     let interval = setInterval(() => {
         destination.innerHTML += message.charAt(i);
         if (i % 2 == 0) {
-            talk('.wrap-him');
+            talk('.wrap-her');
         }
         i++;
         if (i > message.length) {
-            closeMouth('.wrap-him')
-            blink('.wrap-him')
+            closeMouth('.wrap-her')
+            blink('.wrap-her')
             clearInterval(interval);
         }
     }, speed)
@@ -193,6 +189,6 @@ const blink = (person) => {
     const interval = setInterval(() => {
         mouth.classList.toggle('close-eyes');
         clearInterval(interval)
-    }, 20);
+    }, 250);
     mouth.classList.toggle('close-eyes');
 }

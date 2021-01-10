@@ -16,10 +16,6 @@ header {
   transform: scale(1.05, 1.05);
 }
 
-svg:hover {
-  transform: scale(1.05, 1.05);
-}
-
 .btn {
   padding: 1rem !important;
 }
