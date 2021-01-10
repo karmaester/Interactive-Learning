@@ -2,67 +2,67 @@ let counter = 0
 
 const module = [
     {
-        question: "Where are you from?",
+        question: "What is your name?",
         options: {
-            invalid1: "This is jaja the incorrect option1",
-            valid: "This is the correct option",
-            invalid2: "This is the incorrect option2"
+            invalid1: "His name is...",
+            valid: "My name is...",
+            invalid2: "Her name is..."
         },
         dialog: {
             true: "Nice to meet you",
-            false: "Is that really your Name?"
+            false: "¿¿??"
         },
         hint: {
-            hint1: 'Your name is not Jose.',
-            hint2: 'Your name is not Martin.'
+            hint1: '"His" es en tercera persona',
+            hint2: '"Her" es en tercera persona'
         }
     },
     {
-        question: "test2?",
+        question: "Second question",
         options: {
-            invalid1: "This is the incorrect option1 from 2",
-            valid: "This is the correct option from 2",
-            invalid2: "This is the incorrect option2 from 2"
+            invalid1: "This is wrong",
+            valid: "This is the correct",
+            invalid2: "This is wrong"
         },
         dialog: {
-            true: "test2 true dialog",
-            false: "test2 false dialog"
+            true: "Que bien lo has hecho!",
+            false: "No estoy segura de entenderte"
         },
         hint: {
-            hint1: 'Test2 hint 1',
-            hint2: 'Test2 hint 2'
+            hint1: 'Aquí reflexionamos de los errores',
+            hint2: 'Aquí reflexionamos de los errores'
         }
     },
     {
-        question: "test3?",
+        question: "Third question",
         options: {
-            invalid1: "This is the incorrect option1 from 3",
-            valid: "This is the correct option from 3",
-            invalid2: "This is the incorrect option2 from 3"
+            invalid1: "This is wrong",
+            valid: "This is the correct",
+            invalid2: "This is wrong"
         },
         dialog: {
-            true: "test3 true dialog",
-            false: "test3 false dialog"
+            true: "Que bien lo has hecho!",
+            false: "No estoy segura de entenderte"
         },
         hint: {
-            hint1: 'Test3 hint 1',
-            hint2: 'Test3 hint 2'
+            hint1: 'Aquí reflexionamos de los errores',
+            hint2: 'Aquí reflexionamos de los errores'
         }
     },
     {
-        question: "test4?",
+        question: "Fourth question",
         options: {
-            invalid1: "This is the incorrect option1 from 4",
-            valid: "This is the correct option from 4",
-            invalid2: "This is the incorrect option2 from 4"
+            invalid1: "This is wrong",
+            valid: "This is the correct",
+            invalid2: "This is wrong"
         },
         dialog: {
-            true: "test4 true dialog",
-            false: "test4 false dialog"
+            true: "Que bien lo has hecho!",
+            false: "No estoy segura de entenderte"
         },
         hint: {
-            hint1: 'Test4 hint 1',
-            hint2: 'Test4 hint 2'
+            hint1: 'Aquí reflexionamos de los errores',
+            hint2: 'Aquí reflexionamos de los errores'
         }
     }
 ]
