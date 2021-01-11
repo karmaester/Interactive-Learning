@@ -121,6 +121,7 @@ const selectedAnswer = () => {
             let validatedAnswer = answerValidation(selected, module[counter])
             displayDialog(validatedAnswer, module[counter])
             displayHint(validatedAnswer, module[counter])
+            setProgress(validatedAnswer)
         })
     })
 }
@@ -128,7 +129,7 @@ const selectedAnswer = () => {
 const answerValidation = (answer, lesson) => {
     switch (answer.toUpperCase()) {
         case lesson.options.invalid1.toUpperCase():
-            return 'invalid1'
+            return'invalid1'
         case lesson.options.invalid2.toUpperCase():
             return 'invalid2'
         case lesson.options.valid.toUpperCase():
@@ -192,3 +193,34 @@ const blink = (person) => {
     }, 250);
     mouth.classList.toggle('close-eyes');
 }
+
+// PROGRESSBAR
+
+const progressBar = document.querySelector('.progressbar')
+document.documentElement.style.setProperty('--progressbar-columns', module.length)
+
+const setColumns = () => {
+    const div = document.createElement('div')
+    progressBar.appendChild(div)
+    
+    
+}
+
+( ()=> {
+    for (let i = 0; i < module.length; i++) {
+        setColumns()
+    }
+})()
+
+
+const setProgress = (answerValue) => {
+    const bar = [...document.querySelectorAll('.progressbar div')]
+    if (answerValue.toUpperCase() == 'CORRECT') {
+        bar[counter].classList.remove('bg-warning')
+        bar[counter].classList.add('bg-success')
+    } else {
+        bar[counter].classList.toggle('bg-warning')
+    }
+}
+
+
