@@ -9,6 +9,8 @@ const module = [
             invalid2: "Her name is..."
         },
         dialog: {
+            her: "Hi! I'm Dani",
+            him: "Hello! My name is Nicky!",
             true: "Nice to meet you",
             false: "¿¿??"
         },
@@ -97,17 +99,20 @@ const displayHint = (ans, lesson) => {
         hintContainer.classList.add('hide');
         let buttonCont = document.querySelector('#continue')
         buttonCont.classList.remove('d-none')
-        showModal()
+        setTimeout(() => {
+            showModal()
+        }, lesson.dialog.true.length * 100 + 150);
     }
 }
-
+let dialogContainer = document.querySelector('#dialog-container')
 const displayDialog = (ans, lesson) => {
-    let dialogContainer = document.querySelector('#dialog-container')
     dialogContainer.textContent = ''
+    bubble.classList.remove('bubble-bottom-right')
+    gender = '.wrap-her'
     if (ans == "correct") {
-        displayLetterByLetter(dialogContainer, lesson.dialog.true, 100)
+        displayLetterByLetter(dialogContainer, lesson.dialog.true, 100, gender)
     } else {
-        displayLetterByLetter(dialogContainer, lesson.dialog.false, 100)
+        displayLetterByLetter(dialogContainer, lesson.dialog.false, 100, gender)
     }
 }
 
@@ -125,11 +130,25 @@ const selectedAnswer = () => {
         })
     })
 }
+let bubble = document.querySelector('.bubble')
+const he_talks = (lesson) => {
+    bubble.classList.add('bubble-bottom-right')
+    gender = '.wrap-him'
+    dialogContainer.textContent = ''
+    displayLetterByLetter(dialogContainer, lesson.dialog.him, 100, gender)
+}
+
+const she_talks = (lesson) => {
+    bubble.classList.remove('bubble-bottom-right')
+    gender = '.wrap-her'
+    dialogContainer.textContent = ''
+    displayLetterByLetter(dialogContainer, lesson.dialog.her, 100, gender)
+}
 
 const answerValidation = (answer, lesson) => {
     switch (answer.toUpperCase()) {
         case lesson.options.invalid1.toUpperCase():
-            return'invalid1'
+            return 'invalid1'
         case lesson.options.invalid2.toUpperCase():
             return 'invalid2'
         case lesson.options.valid.toUpperCase():
@@ -150,6 +169,10 @@ const continueNext = () => {
 window.addEventListener('load', () => {
     continueNext();
     selectedAnswer();
+    she_talks(module[counter])
+    setTimeout(() => {
+        he_talks(module[counter])
+    }, 3000);
 })
 
 const showModal = () => {
@@ -159,17 +182,17 @@ const showModal = () => {
 
 //characters talk
 
-const displayLetterByLetter = (destination, message, speed) => {
+const displayLetterByLetter = (destination, message, speed, gender) => {
     let i = 0;
     let interval = setInterval(() => {
         destination.innerHTML += message.charAt(i);
         if (i % 2 == 0) {
-            talk('.wrap-her');
+            talk(gender);
         }
         i++;
         if (i > message.length) {
-            closeMouth('.wrap-her')
-            blink('.wrap-her')
+            closeMouth(gender)
+            blink(gender)
             clearInterval(interval);
         }
     }, speed)
@@ -202,11 +225,11 @@ document.documentElement.style.setProperty('--progressbar-columns', module.lengt
 const setColumns = () => {
     const div = document.createElement('div')
     progressBar.appendChild(div)
-    
-    
+
+
 }
 
-( ()=> {
+(() => {
     for (let i = 0; i < module.length; i++) {
         setColumns()
     }
