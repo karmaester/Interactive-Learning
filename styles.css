@@ -68,7 +68,8 @@ svg {
   color: #000;
 }
 
-.bubble-bottom-left:before {
+.bubble-bottom-left:before,
+.bubble-bottom-right:before {
   content: "";
   width: 0px;
   height: 0px;
@@ -79,6 +80,12 @@ svg {
   border-bottom: 20px solid transparent;
   left: 32px;
   bottom: -24px;
+}
+
+.bubble-bottom-right:before {
+  left: initial;
+  right: 32px;
+  transform: rotateY(180deg);
 }
 
 .thought,
