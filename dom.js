@@ -203,6 +203,14 @@ const score_counter = (mistakes) => {
         scoreContainer.textContent = 'You had ' + mistakes + ' mistakes, try again or go back to the lesson'
         // scoreContainer.appendChild(div)
     }
+    else if (mistakes == 0) {
+        scoreContainer.classList.add('bg-success')
+        scoreContainer.textContent = 'You had ' + mistakes + ' mistakes, you can continue to the next lesson'
+    }
+    else if (mistakes == 1) {
+        scoreContainer.classList.add('bg-success')
+        scoreContainer.textContent = 'You had only' + mistakes + ' mistake, you can continue to the next lesson'
+    }
     else {
         scoreContainer.classList.add('bg-success')
         scoreContainer.textContent = 'You had only ' + mistakes + ' mistakes, you can continue to the next lesson'
