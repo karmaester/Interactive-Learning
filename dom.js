@@ -209,7 +209,7 @@ const score_counter = (mistakes) => {
     }
     else if (mistakes == 1) {
         scoreContainer.classList.add('bg-success')
-        scoreContainer.textContent = 'You had only' + mistakes + ' mistake, you can continue to the next lesson'
+        scoreContainer.textContent = 'You had only ' + mistakes + ' mistake, you can continue to the next lesson'
     }
     else {
         scoreContainer.classList.add('bg-success')
