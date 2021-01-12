@@ -1,5 +1,5 @@
 let counter = 0
-
+let mistakes = 0
 const module = [
     {
         question: "What is your name?",
@@ -148,8 +148,10 @@ const she_talks = (lesson) => {
 const answerValidation = (answer, lesson) => {
     switch (answer.toUpperCase()) {
         case lesson.options.invalid1.toUpperCase():
+            mistakes += 1
             return 'invalid1'
         case lesson.options.invalid2.toUpperCase():
+            mistakes += 1
             return 'invalid2'
         case lesson.options.valid.toUpperCase():
             return 'correct'
@@ -161,8 +163,16 @@ const continueNext = () => {
     buttonCont.addEventListener('click', () => {
         counter += 1
         buttonCont.classList.add('d-none')
-        showModal()
-        changeOption(counter);
+        if (counter == module.length) {
+            showModal()
+            score_counter(mistakes)
+            showModal_score()
+        }
+        else {
+            console.log(counter + ',' + mistakes + '+' + module.length)
+            showModal()
+            changeOption(counter);
+        }
     })
 }
 
@@ -178,6 +188,25 @@ window.addEventListener('load', () => {
 const showModal = () => {
     const continueContainer = document.querySelector('.continue-container')
     continueContainer.classList.toggle('show-modal')
+}
+
+const showModal_score = () => {
+    const scoreContainer = document.querySelector('.score-container')
+    scoreContainer.classList.toggle('show-modal')
+}
+
+const score_counter = (mistakes) => {
+    let scoreContainer = document.querySelector('#score');
+    scoreContainer.textContent = ''
+    if (mistakes >= module.length / 2) {
+        scoreContainer.classList.add('bg-warning')
+        scoreContainer.textContent = 'You had ' + mistakes + ' mistakes, try again or go back to the lesson'
+        // scoreContainer.appendChild(div)
+    }
+    else {
+        scoreContainer.classList.add('bg-success')
+        scoreContainer.textContent = 'You had only ' + mistakes + ' mistakes, you can continue to the next lesson'
+    }
 }
 
 //characters talk

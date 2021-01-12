@@ -42,7 +42,6 @@ svg {
 }
 
 #continue {
-  /* margin-top: 30px; */
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
   position: absolute;
   position: absolute;
@@ -143,15 +142,23 @@ svg {
   display: block;
 }
 
-.continue-container {
+.continue-container,
+.score-container 
+{
   transform: translateY(-100vh);
+}
+
+#score {
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  color: white;
 }
 
 .show-modal {
   transform: translateY(0);
 }
 
-.continue-container {
+.continue-container,
+.score-container {
   position: absolute;
   top: 0;
   left: 0;
