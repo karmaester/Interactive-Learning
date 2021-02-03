@@ -3,7 +3,7 @@
 > Language learning app, with interactive features and characters animation using javascript.
 
 
-![screenshot](app/assets/images/screenshot.png)
+![screenshot](screenshot.png)
 
 ## Built With
 
