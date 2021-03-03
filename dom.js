@@ -2,69 +2,133 @@ let counter = 0
 let mistakes = 0
 const module = [
     {
-        question: "What is your name?",
+        question: "Was lernen wir heute?",
         options: {
-            invalid1: "His name is...",
-            valid: "My name is...",
-            invalid2: "Her name is..."
+            invalid1: "Wir lernen Französich",
+            valid: "Wir lernen Deutsch",
+            invalid2: "Ich lerne Dutsch"
         },
         dialog: {
-            her: "Hi! I'm Dani",
-            him: "Hello! My name is Nicky!",
-            true: "Nice to meet you",
-            false: "¿¿??"
+            her: "Hallo, Ich heisse Dani",
+            him: "Servus! Ich bin der Nico!",
+            true: "Ganz genau, los geht's",
+            false: "Bist du sicher davon?"
         },
         hint: {
-            hint1: '"His" es en tercera persona',
-            hint2: '"Her" es en tercera persona'
+            hint1: 'Das spricht mann in Frankreich',
+            hint2: 'Das spricht mann in den Niederlande'
         }
     },
     {
-        question: "Second question",
+        question: "Ich war schon oft in München, ____ Nico war noch nie dort",
         options: {
-            invalid1: "This is wrong",
-            valid: "This is the correct",
-            invalid2: "This is wrong"
+            invalid1: "doch",
+            valid: "aber",
+            invalid2: "weil"
         },
         dialog: {
-            true: "Que bien lo has hecho!",
-            false: "No estoy segura de entenderte"
+            true: "Ja super!",
+            false: "Was meints du?"
         },
         hint: {
-            hint1: 'Aquí reflexionamos de los errores',
-            hint2: 'Aquí reflexionamos de los errores'
+            hint1: 'Piensa en una conjunción coordinante que exprese contrariedad',
+            hint2: 'Piensa en una conjunción coordinante que exprese contrariedad'
         }
     },
     {
-        question: "Third question",
+        question: "Sie bekam eine Auszeichnung, ____ sie die beste Schülerin ist",
         options: {
-            invalid1: "This is wrong",
-            valid: "This is the correct",
-            invalid2: "This is wrong"
+            valid: "weil",
+            invalid1: "wegen",
+            invalid2: "trotzdem"
         },
         dialog: {
-            true: "Que bien lo has hecho!",
-            false: "No estoy segura de entenderte"
+            true: "Perfekt!",
+            false: "Das verstehe Ich nicht..."
         },
         hint: {
-            hint1: 'Aquí reflexionamos de los errores',
-            hint2: 'Aquí reflexionamos de los errores'
+            hint1: 'Piensa en una conjunción coordinante que exprese un motivo',
+            hint2: 'Piensa en una conjunción coordinante que exprese un motivo'
         }
     },
     {
-        question: "Fourth question",
+        question: "Das Wetter ist sehr schön, _____ blieben wir zu Hause.",
         options: {
-            invalid1: "This is wrong",
-            valid: "This is the correct",
-            invalid2: "This is wrong"
+            invalid1: "wo",
+            invalid2: "denn",
+            valid: "trotzdem"
         },
         dialog: {
-            true: "Que bien lo has hecho!",
-            false: "No estoy segura de entenderte"
+            true: "Das stimmt genau!",
+            false: "Wie meinst du das?"
         },
         hint: {
-            hint1: 'Aquí reflexionamos de los errores',
-            hint2: 'Aquí reflexionamos de los errores'
+            hint1: 'Que adverbio conjuntivo expresa contrariedad?',
+            hint2: 'Que adverbio conjuntivo expresa contrariedad?'
+        }
+    },
+    {
+        question: "Es muss kalt sein, ____ haben wir jetzt Winter.",
+        options: {
+            invalid1: "dass",
+            invalid2: "obwohl",
+            valid: "schließlich"
+        },
+        dialog: {
+            true: "Sehr gut!",
+            false: "Wie meinst du das?"
+        },
+        hint: {
+            hint1: 'Que adverbio conjuntivo expresa motivo?',
+            hint2: 'Que adverbio conjuntivo expresa motivo?'
+        }
+    },
+    {
+        question: "Ich habe großen Hunger, ____ ich habe heute noch nichts gegessen.",
+        options: {
+            valid: "denn",
+            invalid2: "seit",
+            invalid1: "sobald"
+        },
+        dialog: {
+            true: "Das stimmt genau!",
+            false: "Wie meinst du das?"
+        },
+        hint: {
+            hint1: 'Que conjunción coordinante expresa motivo?',
+            hint2: 'Que conjunción coordinante expresa motivo?'
+        }
+    },
+    {
+        question: " Ich bin krank, ____ gehe ich morgen nicht zur Arbeit.",
+        options: {
+            invalid1: "damit",
+            invalid2: "soviel",
+            valid: "deshalb"
+        },
+        dialog: {
+            true: "Sehr gut!",
+            false: "Wie meinst du das?"
+        },
+        hint: {
+            hint1: '"Damit" significa "después de" (conjunción de temporal).',
+            hint2: '"Soviel" significa "por lo que".'
+        }
+    },
+    {
+        question: " Ich habe schon viele Leute gefragt, ____ niemand konnte mir helfen.",
+        options: {
+            invalid1: "während",
+            valid: "doch",
+            invalid2: "trotzdem"
+        },
+        dialog: {
+            true: "Das stimmt genau!",
+            false: "Wie meinst du das?"
+        },
+        hint: {
+            hint1: '"Während" significa "durante" (temporal)',
+            hint2: '"trotzdem" significa "a pesar de".'
         }
     }
 ]
@@ -75,7 +139,6 @@ const changeQuestion = (question) => {
     questionContainer.textContent = question
 }
 
-//display the possible answers
 const changeOption = (idx) => {
     changeQuestion(module[idx].question)
     let options = [...document.querySelectorAll('#option')];
@@ -217,8 +280,6 @@ const score_counter = (mistakes) => {
     }
 }
 
-//characters talk
-
 const displayLetterByLetter = (destination, message, speed, gender) => {
     let i = 0;
     let interval = setInterval(() => {
@@ -254,8 +315,6 @@ const blink = (person) => {
     mouth.classList.toggle('close-eyes');
 }
 
-// PROGRESSBAR
-
 const progressBar = document.querySelector('.progressbar')
 document.documentElement.style.setProperty('--progressbar-columns', module.length)
 
@@ -282,5 +341,3 @@ const setProgress = (answerValue) => {
         bar[counter].classList.toggle('bg-warning')
     }
 }
-
-
