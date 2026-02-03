@@ -2,8 +2,8 @@ import { ChatOpenAI } from "@langchain/openai";
 
 export const createLLM = (model?: string) => {
   return new ChatOpenAI({
-    modelName: model || "mistralai/mistral-7b-instruct:free",
-    openAIApiKey: process.env.OPENROUTER_API_KEY || "dummy-key",
+    modelName: model || "nvidia/nemotron-nano-12b-v2-vl:free",
+    apiKey: process.env.OPENROUTER_API_KEY || "dummy-key",
     configuration: {
       baseURL: "https://openrouter.ai/api/v1",
       defaultHeaders: {
@@ -17,9 +17,9 @@ export const createLLM = (model?: string) => {
 };
 
 export const MODELS = {
-  conversation: "mistralai/mistral-7b-instruct:free",
-  grammar: "mistralai/mistral-7b-instruct:free",
-  assessment: "meta-llama/llama-3.1-8b-instruct:free",
-  curriculum: "meta-llama/llama-3.1-8b-instruct:free",
-  culture: "google/gemma-2-9b-it:free",
+  conversation: "nvidia/nemotron-nano-12b-v2-vl:free",
+  grammar: "nvidia/nemotron-nano-12b-v2-vl:free",
+  assessment: "nvidia/nemotron-3-nano-30b-a3b:free",
+  curriculum: "nvidia/nemotron-3-nano-30b-a3b:free",
+  culture: "stepfun/step-3.5-flash:free",
 } as const;
