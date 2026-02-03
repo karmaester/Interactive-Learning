@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profiles  LearnerProfile[]
+  sessions  LearningSession[]
+}
+
+model LearnerProfile {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  targetLanguage String
+  nativeLanguage String   @default("en")
+  cefrLevel      String   @default("A1")
+  totalXP        Int      @default(0)
+  streak         Int      @default(0)
+  lastActiveAt   DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  vocabulary     VocabularyEntry[]
+  assessments    Assessment[]
+  sessions       LearningSession[]
+
+  @@unique([userId, targetLanguage])
+}
+
+model LearningSession {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  profileId   String
+  profile     LearnerProfile @relation(fields: [profileId], references: [id])
+  sessionType String
+  topic       String?
+  messages    Message[]
+  xpEarned    Int       @default(0)
+  startedAt   DateTime  @default(now())
+  endedAt     DateTime?
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   LearningSession @relation(fields: [sessionId], references: [id])
+  role      String
+  content   String
+  agentType String?
+  metadata  String?
+  createdAt DateTime @default(now())
+}
+
+model VocabularyEntry {
+  id           String   @id @default(cuid())
+  profileId    String
+  profile      LearnerProfile @relation(fields: [profileId], references: [id])
+  word         String
+  translation  String
+  context      String?
+  mastery      Float    @default(0)
+  nextReviewAt DateTime @default(now())
+  reviewCount  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([profileId, word])
+}
+
+model Assessment {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   LearnerProfile @relation(fields: [profileId], references: [id])
+  type      String
+  score     Float
+  maxScore  Float
+  cefrLevel String
+  details   String?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,157 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  MessageCircle,
+  BookOpen,
+  ClipboardCheck,
+  ArrowRight,
+  Target,
+} from "lucide-react";
+import { useUserStore } from "@/stores/user-store";
+import { useChatStore } from "@/stores/chat-store";
+import { LANGUAGE_CONFIG, CEFR_DESCRIPTIONS } from "@/lib/types";
+import { Avatar } from "@/components/characters/avatar";
+import { LevelBadge } from "@/components/progress/level-badge";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import type { SessionType } from "@/lib/types";
+
+export default function LearnDashboard() {
+  const router = useRouter();
+  const activeLanguage = useUserStore((s) => s.activeLanguage);
+  const getActiveProfile = useUserStore((s) => s.getActiveProfile);
+  const createSession = useChatStore((s) => s.createSession);
+  const profile = getActiveProfile();
+
+  if (!activeLanguage || !profile) return null;
+
+  const config = LANGUAGE_CONFIG[activeLanguage];
+
+  const activities = [
+    {
+      type: "conversation" as SessionType,
+      icon: MessageCircle,
+      title: "Free Conversation",
+      description: `Practice chatting with ${config.tutorName} in ${config.name}. Get real-time corrections and learn naturally.`,
+      color: "text-blue-600 bg-blue-50 border-blue-100",
+      href: "/learn/conversation",
+    },
+    {
+      type: "lesson" as SessionType,
+      icon: BookOpen,
+      title: "Guided Lesson",
+      description: `Structured lesson with grammar, vocabulary, and exercises tailored to your ${profile.cefrLevel} level.`,
+      color: "text-emerald-600 bg-emerald-50 border-emerald-100",
+      href: "/learn/lesson",
+    },
+    {
+      type: "assessment" as SessionType,
+      icon: ClipboardCheck,
+      title: "Take a Quiz",
+      description: "Test your knowledge and track your progress. Earn XP and level up.",
+      color: "text-purple-600 bg-purple-50 border-purple-100",
+      href: "/learn/assessment",
+    },
+  ];
+
+  const handleActivity = (activity: (typeof activities)[0]) => {
+    createSession(activity.type);
+    router.push(activity.href);
+  };
+
+  return (
+    <div className="h-full overflow-y-auto p-8">
+      <div className="max-w-3xl mx-auto">
+        {/* Welcome header */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4 mb-8"
+        >
+          <Avatar language={activeLanguage} expression="encouraging" size="lg" />
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">
+              Welcome back!
+            </h1>
+            <p className="text-slate-500">
+              Continue learning {config.name} with {config.tutorName}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Level info */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <Card className="mb-8">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+                    <Target className="w-6 h-6 text-indigo-600" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-slate-500 mb-1">
+                      Your Level
+                    </div>
+                    <LevelBadge level={profile.cefrLevel} size="lg" />
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-slate-900">
+                    {profile.totalXP}
+                  </div>
+                  <div className="text-sm text-slate-400">Total XP</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Activity cards */}
+        <h2 className="text-lg font-semibold text-slate-800 mb-4">
+          What would you like to do?
+        </h2>
+        <div className="space-y-3">
+          {activities.map((activity, idx) => (
+            <motion.div
+              key={activity.type}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 + idx * 0.1 }}
+            >
+              <button
+                onClick={() => handleActivity(activity)}
+                className="w-full text-left cursor-pointer"
+              >
+                <Card className="hover:shadow-md hover:border-slate-300 transition-all duration-200 group">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.color}`}
+                      >
+                        <activity.icon className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-slate-800 mb-0.5">
+                          {activity.title}
+                        </h3>
+                        <p className="text-sm text-slate-500 leading-relaxed">
+                          {activity.description}
+                        </p>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
