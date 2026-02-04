@@ -6,7 +6,7 @@ import { SessionSidebar } from "@/components/session-sidebar";
 import { GamificationProvider } from "@/components/gamification/gamification-provider";
 import { useUserStore } from "@/stores/user-store";
 
-export default function LearnLayout({
+export default function ProgressLayout({
   children,
 }: {
   children: React.ReactNode;

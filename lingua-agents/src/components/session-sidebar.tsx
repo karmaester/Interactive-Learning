@@ -8,7 +8,7 @@ import { useUserStore } from "@/stores/user-store";
 import { Avatar } from "@/components/characters/avatar";
 import { LevelBadge } from "@/components/progress/level-badge";
 import { XPDisplay } from "@/components/progress/xp-display";
-import { StreakDisplay } from "@/components/progress/streak-display";
+import { StreakFlame } from "@/components/gamification/streak-flame";
 import { Logo } from "@/components/ui/logo";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 
@@ -56,7 +56,7 @@ export function SessionSidebar() {
               </div>
               <div className="flex items-center gap-2 mt-0.5">
                 <XPDisplay xp={profile.totalXP} />
-                <StreakDisplay streak={profile.streak} />
+                <StreakFlame streak={profile.streak} size="sm" />
               </div>
             </div>
           </div>

@@ -7,7 +7,11 @@ import { InputBar } from "./input-bar";
 import { useChatStore } from "@/stores/chat-store";
 import { useUserStore } from "@/stores/user-store";
 import { useVocabularyStore } from "@/stores/vocabulary-store";
+import { useAchievementStore, ACHIEVEMENTS } from "@/stores/achievement-store";
+import { useGamificationStore } from "@/stores/gamification-store";
+import { XPFloat } from "@/components/gamification/xp-float";
 import type { SessionType } from "@/lib/types";
+import type { AchievementStats } from "@/stores/achievement-store";
 
 interface ChatContainerProps {
   sessionType: SessionType;
@@ -77,6 +81,12 @@ export function ChatContainer({
   );
 
   const getKnownWords = useVocabularyStore((s) => s.getKnownWords);
+
+  const checkAndUnlock = useAchievementStore((s) => s.checkAndUnlock);
+
+  const pushXPGain = useGamificationStore((s) => s.pushXPGain);
+  const pushAchievement = useGamificationStore((s) => s.pushAchievement);
+  const recordMessage = useGamificationStore((s) => s.recordMessage);
 
   const activeSession = activeSessionId ? sessions[activeSessionId] : null;
   const messages = activeSession?.messages || [];
@@ -172,9 +182,45 @@ export function ChatContainer({
 
         // Award XP and skill progress
         addXP(activeLanguage, 5);
+        pushXPGain(5);
+        recordMessage();
         const skill = skillMap[sessionType];
         if (skill) {
           updateSkill(activeLanguage, skill, 2);
+        }
+
+        // Check for new achievements
+        const profiles = useUserStore.getState().profiles;
+        const allSessions = useChatStore.getState().sessions;
+        const allVocab = useVocabularyStore.getState().entries;
+        const langs = ["en", "es", "de"] as const;
+        const languageCount = langs.filter((l) => profiles[l] !== null).length;
+        const totalXP = langs.reduce((s, l) => s + (profiles[l]?.totalXP ?? 0), 0);
+        const streak = langs.reduce((s, l) => Math.max(s, profiles[l]?.streak ?? 0), 0);
+        const completedTopics = langs.reduce((s, l) => s + (profiles[l]?.completedTopics?.length ?? 0), 0);
+        const totalMessages = Object.values(allSessions).reduce(
+          (s, sess) => s + sess.messages.filter((m) => m.role === "user").length, 0
+        );
+        const totalSessions = Object.values(allSessions).filter((s) => s.messages.length > 0).length;
+        const langVocab = Object.values(allVocab).flat();
+        const totalVocab = langVocab.length;
+        const masteredVocab = langVocab.filter((v) => v.mastery >= 0.8).length;
+
+        const stats: AchievementStats = {
+          totalMessages, totalXP, totalVocab, masteredVocab,
+          streak, languageCount, totalSessions, completedTopics,
+        };
+        const newlyUnlocked = checkAndUnlock(stats);
+        for (const unlock of newlyUnlocked) {
+          const ach = ACHIEVEMENTS.find((a) => a.id === unlock.achievementId);
+          if (ach) {
+            pushAchievement({
+              achievementId: ach.id,
+              title: ach.title,
+              description: ach.description,
+              icon: ach.icon,
+            });
+          }
         }
       } catch (error) {
         const errorMsg =
@@ -200,6 +246,10 @@ export function ChatContainer({
       updateSkill,
       getKnownWords,
       skillMap,
+      pushXPGain,
+      recordMessage,
+      checkAndUnlock,
+      pushAchievement,
     ]
   );
 
@@ -215,7 +265,10 @@ export function ChatContainer({
   const placeholder = placeholderConfig[sessionType] || "Type your message...";
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="relative flex flex-col h-full">
+      {/* XP Float notification */}
+      <XPFloat />
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         {messages.length === 0 && (

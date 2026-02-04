@@ -15,6 +15,8 @@ import { useChatStore } from "@/stores/chat-store";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
 import { LevelBadge } from "@/components/progress/level-badge";
+import { DailyGoalRing } from "@/components/gamification/daily-goal";
+import { StreakFlame } from "@/components/gamification/streak-flame";
 import { Card, CardContent } from "@/components/ui/card";
 import type { SessionType } from "@/lib/types";
 
@@ -89,14 +91,16 @@ export default function LearnDashboard() {
           </div>
         </motion.div>
 
-        {/* Level info */}
+        {/* Stats & Daily Goal */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
+          className="grid grid-cols-[1fr_auto] gap-4 mb-8"
         >
-          <Card className="mb-8">
-            <CardContent className="p-6">
+          {/* Level & XP Card */}
+          <Card>
+            <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-indigo-50 rounded-[var(--radius-md)] flex items-center justify-center">
@@ -109,13 +113,24 @@ export default function LearnDashboard() {
                     <LevelBadge level={profile.cefrLevel} size="lg" />
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-slate-900">
-                    {profile.totalXP}
+                <div className="flex items-center gap-5">
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-slate-900">
+                      {profile.totalXP}
+                    </div>
+                    <div className="text-sm text-slate-400">Total XP</div>
                   </div>
-                  <div className="text-sm text-slate-400">Total XP</div>
+                  <StreakFlame streak={profile.streak} size="md" />
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Daily Goal Ring */}
+          <Card>
+            <CardContent className="p-4 flex flex-col items-center justify-center">
+              <div className="text-xs font-semibold text-slate-500 mb-1">Today</div>
+              <DailyGoalRing size={100} />
             </CardContent>
           </Card>
         </motion.div>
