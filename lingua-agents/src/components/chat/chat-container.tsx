@@ -10,6 +10,7 @@ import { useVocabularyStore } from "@/stores/vocabulary-store";
 import { useAchievementStore, ACHIEVEMENTS } from "@/stores/achievement-store";
 import { useGamificationStore } from "@/stores/gamification-store";
 import { XPFloat } from "@/components/gamification/xp-float";
+import { EmptyChat } from "@/components/illustrations/empty-chat";
 import type { SessionType } from "@/lib/types";
 import type { AchievementStats } from "@/stores/achievement-store";
 
@@ -18,36 +19,42 @@ interface ChatContainerProps {
   apiEndpoint?: string;
 }
 
-const emptyStateConfig: Record<string, { icon: string; title: string; subtitle: string }> = {
+const emptyStateConfig: Record<string, { icon: string; title: string; subtitle: string; accentColor: string }> = {
   conversation: {
     icon: "💬",
     title: "Start a conversation",
     subtitle: "Type anything to begin chatting with your tutor",
+    accentColor: "#3B82F6",
   },
   assessment: {
     icon: "📝",
     title: "Ready for your placement test?",
     subtitle: 'Type "start" to begin the placement test',
+    accentColor: "#8B5CF6",
   },
   lesson: {
     icon: "📚",
     title: "Start a structured lesson",
     subtitle: 'Say "start a lesson" or ask to learn about a specific topic',
+    accentColor: "#10B981",
   },
   vocabulary: {
     icon: "📖",
     title: "Build your vocabulary",
     subtitle: 'Ask for "new words about food" or "review my vocabulary"',
+    accentColor: "#14B8A6",
   },
   culture: {
     icon: "🌍",
     title: "Explore the culture",
     subtitle: "Ask about traditions, idioms, etiquette, or cultural differences",
+    accentColor: "#F43F5E",
   },
   exercise: {
     icon: "✏️",
     title: "Practice exercises",
     subtitle: "Ask for grammar exercises, fill-in-the-blank, or drills",
+    accentColor: "#F97316",
   },
 };
 
@@ -272,10 +279,10 @@ export function ChatContainer({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center gap-4">
-            <div className="text-4xl">{emptyState.icon}</div>
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3">
+            <EmptyChat accentColor={emptyState.accentColor} />
             <div>
-              <h3 className="text-lg font-medium text-slate-700">
+              <h3 className="text-lg font-medium font-[family-name:var(--font-heading)] text-slate-700">
                 {emptyState.title}
               </h3>
               <p className="text-sm text-slate-400 mt-1">

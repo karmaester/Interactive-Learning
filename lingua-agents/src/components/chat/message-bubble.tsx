@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSpeechSynthesis } from "@/lib/use-speech";
 import type { ChatMessage, Language } from "@/lib/types";
@@ -44,6 +45,41 @@ function formatContent(content: string) {
   }
 
   return parts.length > 0 ? parts : content;
+}
+
+function formatTimestamp(ts: number) {
+  const d = new Date(ts);
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function CopyButton({ content }: { content: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(content).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [content]);
+
+  return (
+    <button
+      onClick={handleCopy}
+      className={cn(
+        "inline-flex items-center justify-center w-6 h-6 rounded-full transition-colors cursor-pointer",
+        copied
+          ? "bg-emerald-100 text-emerald-600"
+          : "bg-slate-200/60 text-slate-400 hover:text-slate-600 hover:bg-slate-200"
+      )}
+      title={copied ? "Copied!" : "Copy message"}
+    >
+      {copied ? (
+        <Check className="w-3.5 h-3.5" />
+      ) : (
+        <Copy className="w-3.5 h-3.5" />
+      )}
+    </button>
+  );
 }
 
 function SpeakButton({ content, language }: { content: string; language: Language }) {
@@ -112,10 +148,10 @@ export function MessageBubble({
         </div>
       )}
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 group/bubble max-w-[75%]">
         <div
           className={cn(
-            "max-w-[80%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
+            "rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
             isUser
               ? "bg-indigo-600 text-white rounded-tr-sm"
               : "bg-slate-100 text-slate-800 rounded-tl-sm"
@@ -133,12 +169,25 @@ export function MessageBubble({
           )}
         </div>
 
-        {/* Speak button for assistant messages */}
-        {!isUser && !isStreaming && language && message.content && (
-          <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
-            <SpeakButton content={message.content} language={language} />
-          </div>
-        )}
+        {/* Action buttons and timestamp */}
+        <div
+          className={cn(
+            "flex items-center gap-1.5 opacity-0 group-hover/bubble:opacity-100 transition-opacity",
+            isUser ? "justify-end" : "justify-start"
+          )}
+        >
+          {!isUser && !isStreaming && language && message.content && (
+            <>
+              <SpeakButton content={message.content} language={language} />
+              <CopyButton content={message.content} />
+            </>
+          )}
+          {message.timestamp && (
+            <span className="text-[10px] text-slate-400 px-1">
+              {formatTimestamp(message.timestamp)}
+            </span>
+          )}
+        </div>
       </div>
     </motion.div>
   );
