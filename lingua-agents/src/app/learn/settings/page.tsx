@@ -4,9 +4,10 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
-  Settings, Volume2, Globe, Trash2, Download, Upload, RotateCcw,
+  Settings, Volume2, Globe, Trash2, Download, Upload, RotateCcw, Moon, Sun, Monitor, Sparkles,
 } from "lucide-react";
 import { useUserStore } from "@/stores/user-store";
+import { useThemeStore } from "@/stores/theme-store";
 import { useChatStore } from "@/stores/chat-store";
 import { useVocabularyStore } from "@/stores/vocabulary-store";
 import { useAchievementStore } from "@/stores/achievement-store";
@@ -25,6 +26,11 @@ export default function SettingsPage() {
   const updateLevel = useUserStore((s) => s.updateLevel);
   const reset = useUserStore((s) => s.reset);
   const profile = activeLanguage ? profiles[activeLanguage] : null;
+
+  const theme = useThemeStore((s) => s.theme);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  const reducedMotion = useThemeStore((s) => s.reducedMotion);
+  const setReducedMotion = useThemeStore((s) => s.setReducedMotion);
 
   const [confirmReset, setConfirmReset] = useState(false);
   const [ttsRate, setTtsRate] = useState(0.9);
@@ -70,8 +76,8 @@ export default function SettingsPage() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-3 mb-6"
         >
-          <Settings className="w-6 h-6 text-slate-500" />
-          <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+          <Settings className="w-6 h-6 text-slate-500 dark:text-slate-400" />
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Settings</h1>
         </motion.div>
 
         {/* Language & Level */}
@@ -190,6 +196,84 @@ export default function SettingsPage() {
                   <span className="text-xs font-medium text-slate-600 w-8">
                     {ttsRate}x
                   </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Appearance & Accessibility */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.18 }}
+          className="mb-6"
+        >
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Moon className="w-4 h-4 text-violet-500" />
+                <CardTitle className="text-base">
+                  Appearance &amp; Accessibility
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {/* Theme toggle */}
+                <div>
+                  <label className="text-sm text-slate-500 dark:text-slate-400 mb-2 block">
+                    Theme
+                  </label>
+                  <div className="flex gap-2">
+                    {([
+                      { value: "light" as const, icon: Sun, label: "Light" },
+                      { value: "dark" as const, icon: Moon, label: "Dark" },
+                      { value: "system" as const, icon: Monitor, label: "System" },
+                    ]).map((opt) => (
+                      <button
+                        key={opt.value}
+                        onClick={() => setTheme(opt.value)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+                          theme === opt.value
+                            ? "bg-indigo-600 text-white"
+                            : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
+                        }`}
+                      >
+                        <opt.icon className="w-4 h-4" />
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Reduced motion toggle */}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="text-sm text-slate-500 dark:text-slate-400 block">
+                        Reduce Animations
+                      </label>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                        Minimize motion for accessibility or preference
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setReducedMotion(!reducedMotion)}
+                      className={`relative w-11 h-6 rounded-full transition-colors cursor-pointer ${
+                        reducedMotion ? "bg-indigo-600" : "bg-slate-300 dark:bg-slate-600"
+                      }`}
+                      role="switch"
+                      aria-checked={reducedMotion}
+                      aria-label="Toggle reduced animations"
+                    >
+                      <span
+                        className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                          reducedMotion ? "translate-x-5" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </CardContent>

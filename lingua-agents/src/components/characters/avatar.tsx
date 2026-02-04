@@ -43,10 +43,12 @@ export function Avatar({ language, expression, size = "md" }: AvatarProps) {
   const mouth = mouthVariants[expression];
   const eye = eyeVariants[expression];
 
+  const tutorNames = { en: "Emma", es: "Carlos", de: "Lena" };
+
   return (
-    <div className={`${sizeMap[size]} relative`}>
+    <div className={`${sizeMap[size]} relative`} role="img" aria-label={`${tutorNames[language]} tutor avatar, ${expression}`}>
       <motion.div
-        className={`${colors.bg} rounded-full w-full h-full flex items-center justify-center overflow-hidden shadow-lg border-2 border-white`}
+        className={`${colors.bg} rounded-full w-full h-full flex items-center justify-center overflow-hidden shadow-lg border-2 border-white dark:border-slate-700`}
         animate={
           expression === "speaking"
             ? { scale: [1, 1.02, 1] }

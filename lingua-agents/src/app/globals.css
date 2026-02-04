@@ -54,6 +54,32 @@
   --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
 }
 
+/* ──────────────────────────────────────────────
+   Dark Mode Overrides
+   ────────────────────────────────────────────── */
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --surface-primary: #1e293b;
+  --surface-secondary: #0f172a;
+  --surface-elevated: #1e293b;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-inverse: #0f172a;
+
+  --interactive-primary: #818cf8;
+  --interactive-hover: #6366f1;
+  --interactive-muted: #1e1b4b;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(129, 140, 248, 0.2);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -90,6 +116,14 @@ h1, h2, h3, h4, h5, h6 {
   background: #94a3b8;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
 /* ──────────────────────────────────────────────
    Page transitions
    ────────────────────────────────────────────── */
@@ -122,6 +156,16 @@ main {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Manual reduced motion toggle from Settings */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 /* ──────────────────────────────────────────────

@@ -82,10 +82,10 @@ export default function LearnDashboard() {
         >
           <Avatar language={activeLanguage} expression="encouraging" size="lg" />
           <div>
-            <h1 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 tracking-tight">
+            <h1 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 dark:text-slate-100 tracking-tight">
               Welcome back!
             </h1>
-            <p className="text-slate-500">
+            <p className="text-slate-500 dark:text-slate-400">
               Continue learning {config.name} with {config.tutorName}
             </p>
           </div>
@@ -103,8 +103,8 @@ export default function LearnDashboard() {
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-indigo-50 rounded-[var(--radius-md)] flex items-center justify-center">
-                    <Target className="w-6 h-6 text-indigo-600" />
+                  <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-950 rounded-[var(--radius-md)] flex items-center justify-center">
+                    <Target className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
                     <div className="text-sm text-slate-500 mb-1">
@@ -115,10 +115,10 @@ export default function LearnDashboard() {
                 </div>
                 <div className="flex items-center gap-5">
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-slate-900">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       {profile.totalXP}
                     </div>
-                    <div className="text-sm text-slate-400">Total XP</div>
+                    <div className="text-sm text-slate-400 dark:text-slate-500">Total XP</div>
                   </div>
                   <StreakFlame streak={profile.streak} size="md" />
                 </div>
@@ -136,7 +136,7 @@ export default function LearnDashboard() {
         </motion.div>
 
         {/* Activity cards */}
-        <h2 className="text-lg font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-4">
+        <h2 className="text-lg font-semibold font-[family-name:var(--font-heading)] text-slate-800 dark:text-slate-200 mb-4">
           What would you like to do?
         </h2>
         <div className="space-y-3">
@@ -160,10 +160,10 @@ export default function LearnDashboard() {
                         <activity.icon className="w-6 h-6" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-0.5">
+                        <h3 className="font-semibold font-[family-name:var(--font-heading)] text-slate-800 dark:text-slate-200 mb-0.5">
                           {activity.title}
                         </h3>
-                        <p className="text-sm text-slate-500 leading-relaxed">
+                        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                           {activity.description}
                         </p>
                       </div>

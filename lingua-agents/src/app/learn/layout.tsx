@@ -26,7 +26,7 @@ export default function LearnLayout({
 
   return (
     <GamificationProvider>
-      <div className="flex h-screen overflow-hidden bg-slate-50">
+      <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
         <SessionSidebar />
         <main className="flex-1 overflow-hidden">{children}</main>
       </div>

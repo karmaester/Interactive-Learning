@@ -10,10 +10,10 @@ const buttonVariants = cva(
         default:
           "bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-500 shadow-md hover:shadow-lg",
         secondary:
-          "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-400",
+          "bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-600 focus-visible:ring-slate-400",
         outline:
-          "border-2 border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-300",
-        ghost: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+          "border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300",
+        ghost: "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100",
         success:
           "bg-emerald-600 text-white hover:bg-emerald-700 focus-visible:ring-emerald-500",
         danger:

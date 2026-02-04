@@ -277,15 +277,15 @@ export function ChatContainer({
       <XPFloat />
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-6" aria-live="polite" aria-label="Chat messages">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center gap-3">
             <EmptyChat accentColor={emptyState.accentColor} />
             <div>
-              <h3 className="text-lg font-medium font-[family-name:var(--font-heading)] text-slate-700">
+              <h3 className="text-lg font-medium font-[family-name:var(--font-heading)] text-slate-700 dark:text-slate-300">
                 {emptyState.title}
               </h3>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
                 {emptyState.subtitle}
               </p>
             </div>

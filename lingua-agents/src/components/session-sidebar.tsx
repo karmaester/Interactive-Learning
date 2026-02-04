@@ -32,7 +32,7 @@ export function SessionSidebar() {
   const config = activeLanguage ? LANGUAGE_CONFIG[activeLanguage] : null;
 
   return (
-    <aside className="w-64 bg-[var(--surface-primary)] border-r border-slate-200 flex flex-col h-full">
+    <aside className="w-64 bg-[var(--surface-primary)] border-r border-slate-200 dark:border-slate-700 flex flex-col h-full">
       {/* Logo */}
       <div className="px-5 pt-5 pb-3">
         <Logo variant="compact" />
@@ -40,8 +40,8 @@ export function SessionSidebar() {
 
       {/* Condensed profile section */}
       {activeLanguage && profile && config && (
-        <div className="px-4 pb-4 border-b border-slate-100">
-          <div className="flex items-center gap-3 rounded-[var(--radius-md)] bg-slate-50 p-3">
+        <div className="px-4 pb-4 border-b border-slate-100 dark:border-slate-700">
+          <div className="flex items-center gap-3 rounded-[var(--radius-md)] bg-slate-50 dark:bg-slate-800 p-3">
             <Avatar
               language={activeLanguage}
               expression="neutral"
@@ -49,7 +49,7 @@ export function SessionSidebar() {
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="text-sm font-semibold text-slate-700 truncate">
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 truncate">
                   {config.tutorName}
                 </span>
                 <LevelBadge level={profile.cefrLevel} />
@@ -93,8 +93,8 @@ export function SessionSidebar() {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-150",
                     isActive
-                      ? "bg-indigo-50 text-indigo-700 border-l-3 border-indigo-600 shadow-[var(--shadow-sm)]"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-l-3 border-indigo-600 shadow-[var(--shadow-sm)]"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200"
                   )}
                 >
                   <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
@@ -106,7 +106,7 @@ export function SessionSidebar() {
         </ul>
 
         {/* Separator + utility items */}
-        <div className="border-t border-slate-100 mt-3 pt-3">
+        <div className="border-t border-slate-100 dark:border-slate-700 mt-3 pt-3">
           <ul className="space-y-0.5">
             {utilityItems.map((item) => {
               const isActive = pathname.startsWith(item.href);
@@ -118,8 +118,8 @@ export function SessionSidebar() {
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-150",
                       isActive
-                        ? "bg-indigo-50 text-indigo-700 border-l-3 border-indigo-600"
-                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                        ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border-l-3 border-indigo-600"
+                        : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200"
                     )}
                   >
                     <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
@@ -133,10 +133,10 @@ export function SessionSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-100">
+      <div className="p-3 border-t border-slate-100 dark:border-slate-700">
         <Link
           href="/"
-          className="flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-[var(--radius-sm)] transition-all duration-150"
+          className="flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-[var(--radius-sm)] transition-all duration-150"
         >
           <ArrowLeftRight className="w-4 h-4" />
           <span>Change Language</span>
