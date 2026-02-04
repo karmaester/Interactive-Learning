@@ -115,14 +115,15 @@ export const useUserStore = create<UserState>()(
         set((state) => {
           const profile = state.profiles[lang];
           if (!profile) return state;
-          const current = profile.skillScores[skill];
+          const skillScores = profile.skillScores ?? { ...DEFAULT_SKILLS };
+          const current = skillScores[skill];
           const newValue = Math.max(0, Math.min(100, current + delta));
           return {
             profiles: {
               ...state.profiles,
               [lang]: {
                 ...profile,
-                skillScores: { ...profile.skillScores, [skill]: newValue },
+                skillScores: { ...skillScores, [skill]: newValue },
               },
             },
           };
