@@ -3,14 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, MessageCircle, Target, Zap, Flame } from "lucide-react";
+import { ArrowLeft, BookOpen, MessageCircle, Target, Zap, Flame, Library, Brain, CheckCircle2 } from "lucide-react";
 import { useUserStore } from "@/stores/user-store";
 import { useChatStore } from "@/stores/chat-store";
+import { useVocabularyStore } from "@/stores/vocabulary-store";
 import { LANGUAGE_CONFIG, CEFR_DESCRIPTIONS } from "@/lib/types";
 import type { Language, CEFRLevel } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
 import { LevelBadge } from "@/components/progress/level-badge";
 import { ProgressRing } from "@/components/ui/progress-ring";
+import { SkillRadar } from "@/components/progress/skill-radar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -49,6 +51,15 @@ export default function ProgressPage() {
     (sum, s) => sum + s.messages.filter((m) => m.role === "user").length,
     0
   );
+
+  const vocabStats = useVocabularyStore.getState().getStats(activeLanguage);
+  const skillScores = profile.skillScores ?? {
+    grammar: 0,
+    vocabulary: 0,
+    conversation: 0,
+    reading: 0,
+    culture: 0,
+  };
 
   const allProfiles = (["en", "es", "de"] as Language[])
     .map((lang) => ({ lang, profile: profiles[lang] }))
@@ -180,6 +191,104 @@ export default function ProgressPage() {
               </CardContent>
             </Card>
           ))}
+        </motion.div>
+
+        {/* Skill Radar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-6"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Skill Breakdown</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              <SkillRadar scores={skillScores} size={240} />
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Vocabulary Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Vocabulary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-3 bg-slate-50 rounded-xl">
+                  <div className="flex justify-center mb-1">
+                    <Library className="w-4 h-4 text-indigo-500" />
+                  </div>
+                  <div className="text-lg font-bold text-slate-800">
+                    {vocabStats.total}
+                  </div>
+                  <div className="text-xs text-slate-400">Total Words</div>
+                </div>
+                <div className="text-center p-3 bg-slate-50 rounded-xl">
+                  <div className="flex justify-center mb-1">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  </div>
+                  <div className="text-lg font-bold text-slate-800">
+                    {vocabStats.mastered}
+                  </div>
+                  <div className="text-xs text-slate-400">Mastered</div>
+                </div>
+                <div className="text-center p-3 bg-slate-50 rounded-xl">
+                  <div className="flex justify-center mb-1">
+                    <Brain className="w-4 h-4 text-blue-500" />
+                  </div>
+                  <div className="text-lg font-bold text-slate-800">
+                    {vocabStats.learning}
+                  </div>
+                  <div className="text-xs text-slate-400">Learning</div>
+                </div>
+                <div className="text-center p-3 bg-slate-50 rounded-xl">
+                  <div className="flex justify-center mb-1">
+                    <Target className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <div className="text-lg font-bold text-slate-800">
+                    {vocabStats.dueForReview}
+                  </div>
+                  <div className="text-xs text-slate-400">Due for Review</div>
+                </div>
+              </div>
+              {vocabStats.total > 0 && (
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                    <span>Overall Mastery</span>
+                    <span>
+                      {vocabStats.total > 0
+                        ? Math.round(
+                            (vocabStats.mastered / vocabStats.total) * 100
+                          )
+                        : 0}
+                      %
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-2">
+                    <div
+                      className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${
+                          vocabStats.total > 0
+                            ? (vocabStats.mastered / vocabStats.total) * 100
+                            : 0
+                        }%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* All languages */}

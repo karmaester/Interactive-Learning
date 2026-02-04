@@ -6,12 +6,55 @@ import { TypingIndicator } from "./typing-indicator";
 import { InputBar } from "./input-bar";
 import { useChatStore } from "@/stores/chat-store";
 import { useUserStore } from "@/stores/user-store";
-import type { ChatMessage, Language, SessionType } from "@/lib/types";
+import { useVocabularyStore } from "@/stores/vocabulary-store";
+import type { SessionType } from "@/lib/types";
 
 interface ChatContainerProps {
   sessionType: SessionType;
   apiEndpoint?: string;
 }
+
+const emptyStateConfig: Record<string, { icon: string; title: string; subtitle: string }> = {
+  conversation: {
+    icon: "💬",
+    title: "Start a conversation",
+    subtitle: "Type anything to begin chatting with your tutor",
+  },
+  assessment: {
+    icon: "📝",
+    title: "Ready for your placement test?",
+    subtitle: 'Type "start" to begin the placement test',
+  },
+  lesson: {
+    icon: "📚",
+    title: "Start a structured lesson",
+    subtitle: 'Say "start a lesson" or ask to learn about a specific topic',
+  },
+  vocabulary: {
+    icon: "📖",
+    title: "Build your vocabulary",
+    subtitle: 'Ask for "new words about food" or "review my vocabulary"',
+  },
+  culture: {
+    icon: "🌍",
+    title: "Explore the culture",
+    subtitle: "Ask about traditions, idioms, etiquette, or cultural differences",
+  },
+  exercise: {
+    icon: "✏️",
+    title: "Practice exercises",
+    subtitle: "Ask for grammar exercises, fill-in-the-blank, or drills",
+  },
+};
+
+const placeholderConfig: Record<string, string> = {
+  conversation: "Type your message...",
+  assessment: "Type your answer...",
+  lesson: "Respond to continue the lesson...",
+  vocabulary: "Type a topic or answer...",
+  culture: "Ask a cultural question...",
+  exercise: "Type your answer...",
+};
 
 export function ChatContainer({
   sessionType,
@@ -23,6 +66,7 @@ export function ChatContainer({
   const activeLanguage = useUserStore((s) => s.activeLanguage);
   const getActiveProfile = useUserStore((s) => s.getActiveProfile);
   const addXP = useUserStore((s) => s.addXP);
+  const updateSkill = useUserStore((s) => s.updateSkill);
 
   const activeSessionId = useChatStore((s) => s.activeSessionId);
   const sessions = useChatStore((s) => s.sessions);
@@ -31,6 +75,8 @@ export function ChatContainer({
   const updateLastAssistantMessage = useChatStore(
     (s) => s.updateLastAssistantMessage
   );
+
+  const getKnownWords = useVocabularyStore((s) => s.getKnownWords);
 
   const activeSession = activeSessionId ? sessions[activeSessionId] : null;
   const messages = activeSession?.messages || [];
@@ -48,6 +94,16 @@ export function ChatContainer({
     }
   }, [activeSessionId, activeLanguage, sessionType, createSession]);
 
+  // Map sessionType to skill for XP tracking
+  const skillMap: Record<string, "grammar" | "vocabulary" | "conversation" | "reading" | "culture"> = {
+    conversation: "conversation",
+    lesson: "grammar",
+    vocabulary: "vocabulary",
+    culture: "culture",
+    exercise: "grammar",
+    assessment: "reading",
+  };
+
   const sendMessage = useCallback(
     async (content: string) => {
       if (!activeSessionId || !activeLanguage || !profile) return;
@@ -59,6 +115,8 @@ export function ChatContainer({
       addMessage(activeSessionId, "assistant", "");
 
       try {
+        const knownWords = getKnownWords(activeLanguage);
+
         const response = await fetch(apiEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -68,6 +126,8 @@ export function ChatContainer({
             cefrLevel: profile.cefrLevel,
             sessionType,
             history: messages.slice(-10),
+            knownWords: knownWords.slice(-30),
+            completedTopics: profile.completedTopics,
           }),
         });
 
@@ -110,8 +170,12 @@ export function ChatContainer({
           }
         }
 
-        // Award XP for conversation
+        // Award XP and skill progress
         addXP(activeLanguage, 5);
+        const skill = skillMap[sessionType];
+        if (skill) {
+          updateSkill(activeLanguage, skill, 2);
+        }
       } catch (error) {
         const errorMsg =
           error instanceof Error ? error.message : "Connection failed";
@@ -133,6 +197,9 @@ export function ChatContainer({
       addMessage,
       updateLastAssistantMessage,
       addXP,
+      updateSkill,
+      getKnownWords,
+      skillMap,
     ]
   );
 
@@ -144,33 +211,22 @@ export function ChatContainer({
     );
   }
 
+  const emptyState = emptyStateConfig[sessionType] || emptyStateConfig.conversation;
+  const placeholder = placeholderConfig[sessionType] || "Type your message...";
+
   return (
     <div className="flex flex-col h-full">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center gap-4">
-            <div className="text-4xl">
-              {sessionType === "conversation"
-                ? "💬"
-                : sessionType === "assessment"
-                ? "📝"
-                : "📚"}
-            </div>
+            <div className="text-4xl">{emptyState.icon}</div>
             <div>
               <h3 className="text-lg font-medium text-slate-700">
-                {sessionType === "conversation"
-                  ? "Start a conversation"
-                  : sessionType === "assessment"
-                  ? "Ready for your placement test?"
-                  : "Let's learn together"}
+                {emptyState.title}
               </h3>
               <p className="text-sm text-slate-400 mt-1">
-                {sessionType === "conversation"
-                  ? "Type anything to begin chatting with your tutor"
-                  : sessionType === "assessment"
-                  ? 'Type "start" to begin the placement test'
-                  : "Your tutor is ready to help"}
+                {emptyState.subtitle}
               </p>
             </div>
           </div>
@@ -200,11 +256,7 @@ export function ChatContainer({
       <InputBar
         onSend={sendMessage}
         disabled={isStreaming}
-        placeholder={
-          sessionType === "assessment"
-            ? "Type your answer..."
-            : "Type your message..."
-        }
+        placeholder={placeholder}
       />
     </div>
   );

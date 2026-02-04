@@ -2,8 +2,16 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Language, CEFRLevel, LearnerProfile } from "@/lib/types";
+import type { Language, CEFRLevel, LearnerProfile, SkillScores } from "@/lib/types";
 import { generateId } from "@/lib/utils";
+
+const DEFAULT_SKILLS: SkillScores = {
+  grammar: 0,
+  vocabulary: 0,
+  conversation: 0,
+  reading: 0,
+  culture: 0,
+};
 
 interface UserState {
   userId: string;
@@ -17,6 +25,8 @@ interface UserState {
   updateLevel: (lang: Language, level: CEFRLevel) => void;
   addXP: (lang: Language, xp: number) => void;
   incrementStreak: (lang: Language) => void;
+  addCompletedTopic: (lang: Language, topic: string) => void;
+  updateSkill: (lang: Language, skill: keyof SkillScores, delta: number) => void;
   getActiveProfile: () => LearnerProfile | null;
   setOnboarded: (value: boolean) => void;
   reset: () => void;
@@ -40,6 +50,8 @@ export const useUserStore = create<UserState>()(
           cefrLevel,
           totalXP: 0,
           streak: 0,
+          completedTopics: [],
+          skillScores: { ...DEFAULT_SKILLS },
         };
         set((state) => ({
           profiles: { ...state.profiles, [lang]: profile },
@@ -83,10 +95,50 @@ export const useUserStore = create<UserState>()(
           };
         }),
 
+      addCompletedTopic: (lang, topic) =>
+        set((state) => {
+          const profile = state.profiles[lang];
+          if (!profile) return state;
+          if (profile.completedTopics.includes(topic)) return state;
+          return {
+            profiles: {
+              ...state.profiles,
+              [lang]: {
+                ...profile,
+                completedTopics: [...profile.completedTopics, topic],
+              },
+            },
+          };
+        }),
+
+      updateSkill: (lang, skill, delta) =>
+        set((state) => {
+          const profile = state.profiles[lang];
+          if (!profile) return state;
+          const current = profile.skillScores[skill];
+          const newValue = Math.max(0, Math.min(100, current + delta));
+          return {
+            profiles: {
+              ...state.profiles,
+              [lang]: {
+                ...profile,
+                skillScores: { ...profile.skillScores, [skill]: newValue },
+              },
+            },
+          };
+        }),
+
       getActiveProfile: () => {
         const state = get();
         if (!state.activeLanguage) return null;
-        return state.profiles[state.activeLanguage];
+        const profile = state.profiles[state.activeLanguage];
+        if (!profile) return null;
+        // Ensure backward compat with profiles missing new fields
+        return {
+          ...profile,
+          completedTopics: profile.completedTopics ?? [],
+          skillScores: profile.skillScores ?? { ...DEFAULT_SKILLS },
+        };
       },
 
       setOnboarded: (value) => set({ onboarded: value }),

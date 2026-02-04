@@ -8,6 +8,9 @@ import {
   ClipboardCheck,
   ArrowRight,
   Target,
+  Library,
+  Globe,
+  Dumbbell,
 } from "lucide-react";
 import { useUserStore } from "@/stores/user-store";
 import { useChatStore } from "@/stores/chat-store";
@@ -44,6 +47,30 @@ export default function LearnDashboard() {
       description: `Structured lesson with grammar, vocabulary, and exercises tailored to your ${profile.cefrLevel} level.`,
       color: "text-emerald-600 bg-emerald-50 border-emerald-100",
       href: "/learn/lesson",
+    },
+    {
+      type: "exercise" as SessionType,
+      icon: Dumbbell,
+      title: "Grammar & Exercises",
+      description: `Practice grammar drills, fill-in-the-blank, and error correction exercises at your ${profile.cefrLevel} level.`,
+      color: "text-orange-600 bg-orange-50 border-orange-100",
+      href: "/learn/exercise",
+    },
+    {
+      type: "vocabulary" as SessionType,
+      icon: Library,
+      title: "Vocabulary Builder",
+      description: `Learn new words with spaced repetition, build your personal dictionary, and review flashcards.`,
+      color: "text-teal-600 bg-teal-50 border-teal-100",
+      href: "/learn/vocabulary",
+    },
+    {
+      type: "culture" as SessionType,
+      icon: Globe,
+      title: "Cultural Notes",
+      description: `Explore ${config.name} culture, idioms, traditions, and understand social registers.`,
+      color: "text-rose-600 bg-rose-50 border-rose-100",
+      href: "/learn/culture",
     },
     {
       type: "assessment" as SessionType,

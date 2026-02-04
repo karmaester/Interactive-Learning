@@ -12,12 +12,18 @@ export async function POST(req: Request) {
       cefrLevel,
       sessionType,
       history,
+      knownWords,
+      reviewWords,
+      completedTopics,
     }: {
       message: string;
       targetLanguage: Language;
       cefrLevel: CEFRLevel;
       sessionType: SessionType;
       history: ChatMessage[];
+      knownWords?: string[];
+      reviewWords?: string[];
+      completedTopics?: string[];
     } = body;
 
     if (!message || !targetLanguage || !cefrLevel) {
@@ -37,6 +43,9 @@ export async function POST(req: Request) {
             cefrLevel,
             sessionType: sessionType || "conversation",
             history: history || [],
+            knownWords,
+            reviewWords,
+            completedTopics,
           });
 
           for await (const chunk of generator) {
