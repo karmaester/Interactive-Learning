@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { ChatContainer } from "@/components/chat/chat-container";
 import { TopicSelector } from "@/components/topic-selector";
+import { ScenarioSelector, type Scenario } from "@/components/scenario-selector";
 import { useChatStore } from "@/stores/chat-store";
 import { useUserStore } from "@/stores/user-store";
 import { LANGUAGE_CONFIG } from "@/lib/types";
@@ -69,6 +70,14 @@ export default function ConversationPage() {
     [activeSessionId, addMessage]
   );
 
+  const handleScenarioSelect = useCallback(
+    (scenario: Scenario) => {
+      if (!activeSessionId) return;
+      addMessage(activeSessionId, "user", scenario.prompt);
+    },
+    [activeSessionId, addMessage]
+  );
+
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -82,11 +91,17 @@ export default function ConversationPage() {
           </p>
         )}
         {activeLanguage && (
-          <TopicSelector
-            language={activeLanguage}
-            suggestions={topics}
-            onSelect={handleTopicSelect}
-          />
+          <div className="space-y-2">
+            <TopicSelector
+              language={activeLanguage}
+              suggestions={topics}
+              onSelect={handleTopicSelect}
+            />
+            <ScenarioSelector
+              language={activeLanguage}
+              onSelect={handleScenarioSelect}
+            />
+          </div>
         )}
       </div>
 

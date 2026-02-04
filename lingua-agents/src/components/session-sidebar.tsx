@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, BookOpen, ClipboardCheck, BarChart3, Home, Library, Globe, Dumbbell } from "lucide-react";
+import { MessageCircle, BookOpen, ClipboardCheck, BarChart3, Home, Library, Globe, Dumbbell, Trophy, Clock, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
 import { AvatarWithName } from "@/components/characters/avatar";
@@ -18,7 +18,10 @@ const navItems = [
   { href: "/learn/vocabulary", icon: Library, label: "Vocabulary" },
   { href: "/learn/culture", icon: Globe, label: "Culture" },
   { href: "/learn/assessment", icon: ClipboardCheck, label: "Assessment" },
+  { href: "/learn/achievements", icon: Trophy, label: "Achievements" },
+  { href: "/learn/history", icon: Clock, label: "History" },
   { href: "/progress", icon: BarChart3, label: "Progress" },
+  { href: "/learn/settings", icon: Settings, label: "Settings" },
 ];
 
 export function SessionSidebar() {

@@ -10,11 +10,12 @@ import { useUserStore } from "@/stores/user-store";
 import type { Language } from "@/lib/types";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
+import { OnboardingFlow } from "@/components/onboarding-flow";
 
 export default function LandingPage() {
   const router = useRouter();
   const [selectedLang, setSelectedLang] = useState<Language | null>(null);
-  const { activeLanguage, profiles, setActiveLanguage, createProfile } =
+  const { activeLanguage, profiles, setActiveLanguage, createProfile, onboarded } =
     useUserStore();
 
   const handleGetStarted = () => {
@@ -40,6 +41,11 @@ export default function LandingPage() {
   const existingProfiles = (["en", "es", "de"] as Language[]).filter(
     (l) => profiles[l] !== null
   );
+
+  // Show onboarding for first-time users
+  if (!onboarded && existingProfiles.length === 0) {
+    return <OnboardingFlow />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
