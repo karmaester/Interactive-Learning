@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { ChatContainer } from "@/components/chat/chat-container";
 import { TopicSelector } from "@/components/topic-selector";
 import { useChatStore } from "@/stores/chat-store";
@@ -8,10 +9,12 @@ import { useUserStore } from "@/stores/user-store";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 import { topicsByLevel } from "@/agents/prompts/curriculum";
 import type { CEFRLevel } from "@/lib/types";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ClipboardCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LevelBadge } from "@/components/progress/level-badge";
 
 export default function LessonPage() {
+  const router = useRouter();
   const activeLanguage = useUserStore((s) => s.activeLanguage);
   const getActiveProfile = useUserStore((s) => s.getActiveProfile);
   const activeSessionId = useChatStore((s) => s.activeSessionId);
@@ -47,22 +50,34 @@ export default function LessonPage() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header with topic selection */}
-      <div className="border-b border-slate-200 bg-white px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-slate-800">
-              Structured Lessons
-            </h1>
-            {config && (
-              <p className="text-sm text-slate-500 mb-3">
-                {config.name} lessons with {config.tutorName} at{" "}
-                {level} level &middot;{" "}
-                {completedTopics.length}/{topics.length} completed
-              </p>
-            )}
-          </div>
+      {/* Header with topic selection + assessment shortcut */}
+      <div className="border-b border-slate-200 bg-[var(--surface-primary)] px-6 py-4">
+        <div className="flex items-center justify-between mb-1">
+          <h1 className="text-lg font-semibold font-[family-name:var(--font-heading)] text-slate-800">
+            Learn
+          </h1>
+
+          {/* Assessment shortcut */}
+          <button
+            onClick={() => router.push("/learn/assessment")}
+            className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-[var(--radius-sm)] bg-purple-50 text-purple-600 border border-purple-200 hover:bg-purple-100 transition-colors cursor-pointer font-medium"
+          >
+            <ClipboardCheck className="w-3.5 h-3.5" />
+            Take Assessment
+          </button>
         </div>
+
+        {config && profile && (
+          <div className="flex items-center gap-2 mb-3">
+            <p className="text-sm text-[var(--text-secondary)]">
+              {config.name} lessons with {config.tutorName}
+            </p>
+            <LevelBadge level={profile.cefrLevel} size="sm" />
+            <span className="text-xs text-slate-400">
+              {completedTopics.length}/{topics.length} completed
+            </span>
+          </div>
+        )}
 
         {/* Completed topic chips */}
         {completedTopics.length > 0 && (

@@ -5,19 +5,17 @@ import { motion } from "framer-motion";
 import {
   MessageCircle,
   BookOpen,
-  ClipboardCheck,
   ArrowRight,
   Target,
   Library,
-  Globe,
-  Dumbbell,
+  BarChart3,
 } from "lucide-react";
 import { useUserStore } from "@/stores/user-store";
 import { useChatStore } from "@/stores/chat-store";
-import { LANGUAGE_CONFIG, CEFR_DESCRIPTIONS } from "@/lib/types";
+import { LANGUAGE_CONFIG } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
 import { LevelBadge } from "@/components/progress/level-badge";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { SessionType } from "@/lib/types";
 
 export default function LearnDashboard() {
@@ -35,50 +33,34 @@ export default function LearnDashboard() {
     {
       type: "conversation" as SessionType,
       icon: MessageCircle,
-      title: "Free Conversation",
-      description: `Practice chatting with ${config.tutorName} in ${config.name}. Get real-time corrections and learn naturally.`,
+      title: "Practice",
+      description: `Conversations, exercises, culture, and role-play scenarios with ${config.tutorName}.`,
       color: "text-blue-600 bg-blue-50 border-blue-100",
-      href: "/learn/conversation",
+      href: "/learn/practice",
     },
     {
       type: "lesson" as SessionType,
       icon: BookOpen,
-      title: "Guided Lesson",
-      description: `Structured lesson with grammar, vocabulary, and exercises tailored to your ${profile.cefrLevel} level.`,
+      title: "Learn",
+      description: `Structured lessons with grammar, vocabulary, and exercises at your ${profile.cefrLevel} level.`,
       color: "text-emerald-600 bg-emerald-50 border-emerald-100",
       href: "/learn/lesson",
     },
     {
-      type: "exercise" as SessionType,
-      icon: Dumbbell,
-      title: "Grammar & Exercises",
-      description: `Practice grammar drills, fill-in-the-blank, and error correction exercises at your ${profile.cefrLevel} level.`,
-      color: "text-orange-600 bg-orange-50 border-orange-100",
-      href: "/learn/exercise",
-    },
-    {
       type: "vocabulary" as SessionType,
       icon: Library,
-      title: "Vocabulary Builder",
+      title: "Vocabulary",
       description: `Learn new words with spaced repetition, build your personal dictionary, and review flashcards.`,
       color: "text-teal-600 bg-teal-50 border-teal-100",
       href: "/learn/vocabulary",
     },
     {
-      type: "culture" as SessionType,
-      icon: Globe,
-      title: "Cultural Notes",
-      description: `Explore ${config.name} culture, idioms, traditions, and understand social registers.`,
-      color: "text-rose-600 bg-rose-50 border-rose-100",
-      href: "/learn/culture",
-    },
-    {
-      type: "assessment" as SessionType,
-      icon: ClipboardCheck,
-      title: "Take a Quiz",
-      description: "Test your knowledge and track your progress. Earn XP and level up.",
-      color: "text-purple-600 bg-purple-50 border-purple-100",
-      href: "/learn/assessment",
+      type: "conversation" as SessionType,
+      icon: BarChart3,
+      title: "Progress",
+      description: "Track your stats, achievements, and session history across all languages.",
+      color: "text-indigo-600 bg-indigo-50 border-indigo-100",
+      href: "/progress",
     },
   ];
 

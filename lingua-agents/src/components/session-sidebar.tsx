@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, BookOpen, ClipboardCheck, BarChart3, Home, Library, Globe, Dumbbell, Trophy, Clock, Settings, ArrowLeftRight } from "lucide-react";
+import { MessageCircle, BookOpen, BarChart3, Home, Library, Settings, ArrowLeftRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
 import { Avatar } from "@/components/characters/avatar";
@@ -13,15 +13,10 @@ import { Logo } from "@/components/ui/logo";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 
 const navItems = [
-  { href: "/learn", icon: Home, label: "Dashboard" },
-  { href: "/learn/conversation", icon: MessageCircle, label: "Conversation" },
-  { href: "/learn/lesson", icon: BookOpen, label: "Lessons" },
-  { href: "/learn/exercise", icon: Dumbbell, label: "Exercises" },
+  { href: "/learn", icon: Home, label: "Home" },
+  { href: "/learn/practice", icon: MessageCircle, label: "Practice" },
+  { href: "/learn/lesson", icon: BookOpen, label: "Learn" },
   { href: "/learn/vocabulary", icon: Library, label: "Vocabulary" },
-  { href: "/learn/culture", icon: Globe, label: "Culture" },
-  { href: "/learn/assessment", icon: ClipboardCheck, label: "Assessment" },
-  { href: "/learn/achievements", icon: Trophy, label: "Achievements" },
-  { href: "/learn/history", icon: Clock, label: "History" },
   { href: "/progress", icon: BarChart3, label: "Progress" },
 ];
 
@@ -72,10 +67,24 @@ export function SessionSidebar() {
       <nav className="flex-1 px-3 py-3 overflow-y-auto">
         <ul className="space-y-0.5">
           {navItems.map((item) => {
-            const isActive =
-              item.href === "/learn"
-                ? pathname === "/learn"
-                : pathname.startsWith(item.href);
+            let isActive = false;
+            if (item.href === "/learn") {
+              isActive = pathname === "/learn";
+            } else if (item.href === "/learn/practice") {
+              isActive = pathname === "/learn/practice" ||
+                pathname.startsWith("/learn/conversation") ||
+                pathname.startsWith("/learn/exercise") ||
+                pathname.startsWith("/learn/culture");
+            } else if (item.href === "/learn/lesson") {
+              isActive = pathname.startsWith("/learn/lesson") ||
+                pathname.startsWith("/learn/assessment");
+            } else if (item.href === "/progress") {
+              isActive = pathname.startsWith("/progress") ||
+                pathname.startsWith("/learn/achievements") ||
+                pathname.startsWith("/learn/history");
+            } else {
+              isActive = pathname.startsWith(item.href);
+            }
 
             return (
               <li key={item.href}>
