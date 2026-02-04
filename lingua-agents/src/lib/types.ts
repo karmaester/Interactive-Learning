@@ -2,7 +2,7 @@ export type Language = "en" | "es" | "de";
 
 export type CEFRLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
-export type SessionType = "conversation" | "lesson" | "exercise" | "assessment";
+export type SessionType = "conversation" | "lesson" | "exercise" | "assessment" | "vocabulary" | "culture";
 
 export type AgentType =
   | "orchestrator"
@@ -20,6 +20,14 @@ export type ExpressionState =
   | "celebrating"
   | "encouraging";
 
+export interface SkillScores {
+  grammar: number;   // 0-100
+  vocabulary: number;
+  conversation: number;
+  reading: number;
+  culture: number;
+}
+
 export interface LearnerProfile {
   id: string;
   targetLanguage: Language;
@@ -27,6 +35,8 @@ export interface LearnerProfile {
   cefrLevel: CEFRLevel;
   totalXP: number;
   streak: number;
+  completedTopics: string[];
+  skillScores: SkillScores;
 }
 
 export interface ChatMessage {

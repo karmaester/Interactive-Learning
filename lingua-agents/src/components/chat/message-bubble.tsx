@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSpeechSynthesis } from "@/lib/use-speech";
 import type { ChatMessage, Language } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
 
@@ -44,6 +46,33 @@ function formatContent(content: string) {
   return parts.length > 0 ? parts : content;
 }
 
+function SpeakButton({ content, language }: { content: string; language: Language }) {
+  const { isSpeaking, isSupported, speak, stop } = useSpeechSynthesis({
+    language,
+  });
+
+  if (!isSupported) return null;
+
+  return (
+    <button
+      onClick={() => (isSpeaking ? stop() : speak(content))}
+      className={cn(
+        "inline-flex items-center justify-center w-6 h-6 rounded-full transition-colors cursor-pointer",
+        isSpeaking
+          ? "bg-indigo-100 text-indigo-600"
+          : "bg-slate-200/60 text-slate-400 hover:text-slate-600 hover:bg-slate-200"
+      )}
+      title={isSpeaking ? "Stop" : "Listen"}
+    >
+      {isSpeaking ? (
+        <VolumeX className="w-3.5 h-3.5" />
+      ) : (
+        <Volume2 className="w-3.5 h-3.5" />
+      )}
+    </button>
+  );
+}
+
 export function MessageBubble({
   message,
   language,
@@ -83,23 +112,32 @@ export function MessageBubble({
         </div>
       )}
 
-      <div
-        className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
-          isUser
-            ? "bg-indigo-600 text-white rounded-tr-sm"
-            : "bg-slate-100 text-slate-800 rounded-tl-sm"
-        )}
-      >
-        <div className="whitespace-pre-wrap break-words">
-          {formatContent(message.content)}
+      <div className="flex flex-col gap-1">
+        <div
+          className={cn(
+            "max-w-[80%] rounded-2xl px-4 py-3 text-[15px] leading-relaxed",
+            isUser
+              ? "bg-indigo-600 text-white rounded-tr-sm"
+              : "bg-slate-100 text-slate-800 rounded-tl-sm"
+          )}
+        >
+          <div className="whitespace-pre-wrap break-words">
+            {formatContent(message.content)}
+          </div>
+          {isStreaming && (
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{ repeat: Infinity, duration: 0.8 }}
+              className="inline-block w-1.5 h-4 bg-current ml-0.5 align-middle"
+            />
+          )}
         </div>
-        {isStreaming && (
-          <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ repeat: Infinity, duration: 0.8 }}
-            className="inline-block w-1.5 h-4 bg-current ml-0.5 align-middle"
-          />
+
+        {/* Speak button for assistant messages */}
+        {!isUser && !isStreaming && language && message.content && (
+          <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
+            <SpeakButton content={message.content} language={language} />
+          </div>
         )}
       </div>
     </motion.div>
