@@ -1,18 +1,52 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { ChatContainer } from "@/components/chat/chat-container";
+import { TopicSelector } from "@/components/topic-selector";
 import { useChatStore } from "@/stores/chat-store";
 import { useUserStore } from "@/stores/user-store";
 import { LANGUAGE_CONFIG } from "@/lib/types";
+
+const CONVERSATION_TOPICS: Record<string, string[]> = {
+  en: [
+    "Daily routine",
+    "Ordering at a restaurant",
+    "Asking for directions",
+    "Job interview",
+    "Travel stories",
+    "Hobbies and interests",
+    "Weekend plans",
+    "Shopping",
+  ],
+  es: [
+    "La rutina diaria",
+    "Pedir en un restaurante",
+    "Pedir direcciones",
+    "Entrevista de trabajo",
+    "Historias de viaje",
+    "Pasatiempos",
+    "Planes del fin de semana",
+    "De compras",
+  ],
+  de: [
+    "Tagesablauf",
+    "Im Restaurant bestellen",
+    "Nach dem Weg fragen",
+    "Vorstellungsgespräch",
+    "Reisegeschichten",
+    "Hobbys und Interessen",
+    "Wochenendpläne",
+    "Einkaufen",
+  ],
+};
 
 export default function ConversationPage() {
   const activeLanguage = useUserStore((s) => s.activeLanguage);
   const activeSessionId = useChatStore((s) => s.activeSessionId);
   const sessions = useChatStore((s) => s.sessions);
   const createSession = useChatStore((s) => s.createSession);
+  const addMessage = useChatStore((s) => s.addMessage);
 
-  // Ensure we have a conversation session
   useEffect(() => {
     const activeSession = activeSessionId
       ? sessions[activeSessionId]
@@ -23,6 +57,17 @@ export default function ConversationPage() {
   }, [activeSessionId, sessions, createSession]);
 
   const config = activeLanguage ? LANGUAGE_CONFIG[activeLanguage] : null;
+  const topics = activeLanguage
+    ? CONVERSATION_TOPICS[activeLanguage] || CONVERSATION_TOPICS.en
+    : [];
+
+  const handleTopicSelect = useCallback(
+    (topic: string) => {
+      if (!activeSessionId) return;
+      addMessage(activeSessionId, "user", `Let's talk about: ${topic}`);
+    },
+    [activeSessionId, addMessage]
+  );
 
   return (
     <div className="h-full flex flex-col">
@@ -32,9 +77,16 @@ export default function ConversationPage() {
           Conversation Practice
         </h1>
         {config && (
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 mb-3">
             Chat freely with {config.tutorName} in {config.name}
           </p>
+        )}
+        {activeLanguage && (
+          <TopicSelector
+            language={activeLanguage}
+            suggestions={topics}
+            onSelect={handleTopicSelect}
+          />
         )}
       </div>
 

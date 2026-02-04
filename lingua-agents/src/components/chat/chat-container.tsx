@@ -257,6 +257,7 @@ export function ChatContainer({
         onSend={sendMessage}
         disabled={isStreaming}
         placeholder={placeholder}
+        language={activeLanguage}
       />
     </div>
   );

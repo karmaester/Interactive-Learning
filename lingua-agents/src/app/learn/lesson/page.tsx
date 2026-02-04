@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { ChatContainer } from "@/components/chat/chat-container";
+import { TopicSelector } from "@/components/topic-selector";
 import { useChatStore } from "@/stores/chat-store";
 import { useUserStore } from "@/stores/user-store";
 import { LANGUAGE_CONFIG } from "@/lib/types";
@@ -28,10 +29,21 @@ export default function LessonPage() {
     }
   }, [activeSessionId, sessions, createSession]);
 
+  const addMessage = useChatStore((s) => s.addMessage);
+
   const config = activeLanguage ? LANGUAGE_CONFIG[activeLanguage] : null;
   const level = profile?.cefrLevel || "A1";
   const topics = topicsByLevel[level as CEFRLevel] || [];
   const completedTopics = profile?.completedTopics || [];
+  const remainingTopics = topics.filter((t) => !completedTopics.includes(t));
+
+  const handleTopicSelect = useCallback(
+    (topic: string) => {
+      if (!activeSessionId) return;
+      addMessage(activeSessionId, "user", `Start a lesson about: ${topic}`);
+    },
+    [activeSessionId, addMessage]
+  );
 
   return (
     <div className="h-full flex flex-col">
@@ -43,7 +55,7 @@ export default function LessonPage() {
               Structured Lessons
             </h1>
             {config && (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-500 mb-3">
                 {config.name} lessons with {config.tutorName} at{" "}
                 {level} level &middot;{" "}
                 {completedTopics.length}/{topics.length} completed
@@ -52,15 +64,23 @@ export default function LessonPage() {
           </div>
         </div>
 
-        {/* Topic chips */}
-        <div className="flex flex-wrap gap-2 mt-3">
-          {topics.map((topic) => {
-            const isDone = completedTopics.includes(topic);
-            return (
-              <TopicChip key={topic} topic={topic} completed={isDone} />
-            );
-          })}
-        </div>
+        {/* Completed topic chips */}
+        {completedTopics.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-2">
+            {completedTopics.map((topic) => (
+              <TopicChip key={topic} topic={topic} completed={true} />
+            ))}
+          </div>
+        )}
+
+        {/* Topic selector with custom option */}
+        {activeLanguage && (
+          <TopicSelector
+            language={activeLanguage}
+            suggestions={remainingTopics}
+            onSelect={handleTopicSelect}
+          />
+        )}
       </div>
 
       {/* Chat */}
