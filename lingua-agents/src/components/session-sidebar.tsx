@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, BookOpen, ClipboardCheck, BarChart3, Home, Library, Globe, Dumbbell, Trophy, Clock, Settings } from "lucide-react";
+import { MessageCircle, BookOpen, ClipboardCheck, BarChart3, Home, Library, Globe, Dumbbell, Trophy, Clock, Settings, ArrowLeftRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
-import { AvatarWithName } from "@/components/characters/avatar";
+import { Avatar } from "@/components/characters/avatar";
 import { LevelBadge } from "@/components/progress/level-badge";
 import { XPDisplay } from "@/components/progress/xp-display";
 import { StreakDisplay } from "@/components/progress/streak-display";
+import { Logo } from "@/components/ui/logo";
+import { LANGUAGE_CONFIG } from "@/lib/types";
 
 const navItems = [
   { href: "/learn", icon: Home, label: "Dashboard" },
@@ -21,6 +23,9 @@ const navItems = [
   { href: "/learn/achievements", icon: Trophy, label: "Achievements" },
   { href: "/learn/history", icon: Clock, label: "History" },
   { href: "/progress", icon: BarChart3, label: "Progress" },
+];
+
+const utilityItems = [
   { href: "/learn/settings", icon: Settings, label: "Settings" },
 ];
 
@@ -29,30 +34,43 @@ export function SessionSidebar() {
   const activeLanguage = useUserStore((s) => s.activeLanguage);
   const getActiveProfile = useUserStore((s) => s.getActiveProfile);
   const profile = getActiveProfile();
+  const config = activeLanguage ? LANGUAGE_CONFIG[activeLanguage] : null;
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col h-full">
-      {/* Profile section */}
-      <div className="p-6 border-b border-slate-100">
-        {activeLanguage && profile && (
-          <div className="flex flex-col items-center gap-3">
-            <AvatarWithName
-              language={activeLanguage}
-              expression="neutral"
-              size="lg"
-            />
-            <LevelBadge level={profile.cefrLevel} />
-            <div className="flex gap-2">
-              <XPDisplay xp={profile.totalXP} />
-              <StreakDisplay streak={profile.streak} />
-            </div>
-          </div>
-        )}
+    <aside className="w-64 bg-[var(--surface-primary)] border-r border-slate-200 flex flex-col h-full">
+      {/* Logo */}
+      <div className="px-5 pt-5 pb-3">
+        <Logo variant="compact" />
       </div>
 
+      {/* Condensed profile section */}
+      {activeLanguage && profile && config && (
+        <div className="px-4 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-3 rounded-[var(--radius-md)] bg-slate-50 p-3">
+            <Avatar
+              language={activeLanguage}
+              expression="neutral"
+              size="sm"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-semibold text-slate-700 truncate">
+                  {config.tutorName}
+                </span>
+                <LevelBadge level={profile.cefrLevel} />
+              </div>
+              <div className="flex items-center gap-2 mt-0.5">
+                <XPDisplay xp={profile.totalXP} />
+                <StreakDisplay streak={profile.streak} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 px-3 py-3 overflow-y-auto">
+        <ul className="space-y-0.5">
           {navItems.map((item) => {
             const isActive =
               item.href === "/learn"
@@ -64,27 +82,54 @@ export function SessionSidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors",
+                    "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-150",
                     isActive
-                      ? "bg-indigo-50 text-indigo-700"
+                      ? "bg-indigo-50 text-indigo-700 border-l-3 border-indigo-600 shadow-[var(--shadow-sm)]"
                       : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   )}
                 >
-                  <item.icon className="w-5 h-5" />
+                  <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
                   {item.label}
                 </Link>
               </li>
             );
           })}
         </ul>
+
+        {/* Separator + utility items */}
+        <div className="border-t border-slate-100 mt-3 pt-3">
+          <ul className="space-y-0.5">
+            {utilityItems.map((item) => {
+              const isActive = pathname.startsWith(item.href);
+
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-150",
+                      isActive
+                        ? "bg-indigo-50 text-indigo-700 border-l-3 border-indigo-600"
+                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                    )}
+                  >
+                    <item.icon className="w-[18px] h-[18px] flex-shrink-0" />
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-slate-100">
+      <div className="p-3 border-t border-slate-100">
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-600 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-[var(--radius-sm)] transition-all duration-150"
         >
+          <ArrowLeftRight className="w-4 h-4" />
           <span>Change Language</span>
         </Link>
       </div>

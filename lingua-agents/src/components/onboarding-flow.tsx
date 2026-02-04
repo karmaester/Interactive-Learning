@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft, Globe, Brain, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft, Brain, MessageCircle, Sparkles } from "lucide-react";
 import { useUserStore } from "@/stores/user-store";
 import { Avatar } from "@/components/characters/avatar";
 import { LanguageSelector } from "@/components/language-selector";
 import { Button } from "@/components/ui/button";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 import type { Language } from "@/lib/types";
+import { LogoAnimated } from "@/components/ui/logo";
 
 const STEPS = [
   { id: "welcome", title: "Welcome" },
@@ -75,12 +76,10 @@ export function OnboardingFlow() {
               className="text-center"
             >
               <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center">
-                  <Globe className="w-8 h-8 text-indigo-600" />
-                </div>
+                <LogoAnimated />
               </div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-3">
-                Welcome to LinguaAgents
+              <h1 className="text-3xl font-extrabold font-[family-name:var(--font-heading)] text-slate-900 mb-3 tracking-tight">
+                Welcome to Lingua<span className="text-indigo-600">Agents</span>
               </h1>
               <p className="text-slate-500 leading-relaxed mb-8">
                 Learn languages with AI tutors powered by a multi-agent system.
@@ -94,8 +93,8 @@ export function OnboardingFlow() {
                   { icon: Brain, label: "Adaptive", color: "text-purple-600 bg-purple-50" },
                   { icon: Sparkles, label: "6 AI Agents", color: "text-amber-600 bg-amber-50" },
                 ].map((f) => (
-                  <div key={f.label} className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-100">
-                    <div className={`w-8 h-8 rounded-lg ${f.color} flex items-center justify-center`}>
+                  <div key={f.label} className="flex flex-col items-center gap-2 p-3 rounded-[var(--radius-md)] bg-[var(--surface-primary)] border border-slate-100">
+                    <div className={`w-8 h-8 rounded-[var(--radius-sm)] ${f.color} flex items-center justify-center`}>
                       <f.icon className="w-4 h-4" />
                     </div>
                     <span className="text-xs font-medium text-slate-600">{f.label}</span>
@@ -119,7 +118,7 @@ export function OnboardingFlow() {
               exit={{ opacity: 0, x: -20 }}
               className="text-center"
             >
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              <h2 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 mb-2">
                 What language do you want to learn?
               </h2>
               <p className="text-slate-500 mb-8">
@@ -158,7 +157,7 @@ export function OnboardingFlow() {
               exit={{ opacity: 0, x: -20 }}
               className="text-center"
             >
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              <h2 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 mb-2">
                 Meet {config.tutorName}
               </h2>
               <p className="text-slate-500 mb-8">
@@ -174,7 +173,7 @@ export function OnboardingFlow() {
                 />
               </div>
 
-              <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-8 text-left">
+              <div className="bg-[var(--surface-primary)] rounded-[var(--radius-lg)] border border-slate-100 p-5 mb-8 text-left">
                 <p className="text-slate-600 italic text-sm leading-relaxed">
                   &ldquo;{selectedLang === "en"
                     ? "Hello! I'm Emma, your English tutor. I'll help you improve your conversation skills, grammar, and vocabulary. Let's start with a quick assessment to find your level!"
@@ -212,7 +211,7 @@ export function OnboardingFlow() {
                   <Sparkles className="w-8 h-8 text-emerald-600" />
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
+              <h2 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 mb-2">
                 You&apos;re all set!
               </h2>
               <p className="text-slate-500 mb-4">
@@ -227,7 +226,7 @@ export function OnboardingFlow() {
                 ].map((item) => (
                   <div
                     key={item.num}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-100"
+                    className="flex items-center gap-3 p-3 rounded-[var(--radius-md)] bg-[var(--surface-primary)] border border-slate-100"
                   >
                     <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
                       {item.num}

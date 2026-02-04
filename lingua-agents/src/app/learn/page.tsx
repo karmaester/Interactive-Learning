@@ -98,7 +98,7 @@ export default function LearnDashboard() {
         >
           <Avatar language={activeLanguage} expression="encouraging" size="lg" />
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold font-[family-name:var(--font-heading)] text-slate-900 tracking-tight">
               Welcome back!
             </h1>
             <p className="text-slate-500">
@@ -117,7 +117,7 @@ export default function LearnDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-indigo-50 rounded-[var(--radius-md)] flex items-center justify-center">
                     <Target className="w-6 h-6 text-indigo-600" />
                   </div>
                   <div>
@@ -139,7 +139,7 @@ export default function LearnDashboard() {
         </motion.div>
 
         {/* Activity cards */}
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">
+        <h2 className="text-lg font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-4">
           What would you like to do?
         </h2>
         <div className="space-y-3">
@@ -158,12 +158,12 @@ export default function LearnDashboard() {
                   <CardContent className="p-5">
                     <div className="flex items-center gap-4">
                       <div
-                        className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${activity.color}`}
+                        className={`w-12 h-12 rounded-[var(--radius-md)] flex items-center justify-center flex-shrink-0 ${activity.color}`}
                       >
                         <activity.icon className="w-6 h-6" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-slate-800 mb-0.5">
+                        <h3 className="font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-0.5">
                           {activity.title}
                         </h3>
                         <p className="text-sm text-slate-500 leading-relaxed">

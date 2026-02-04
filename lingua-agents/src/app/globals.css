@@ -1,8 +1,57 @@
 @import "tailwindcss";
 
+/* ──────────────────────────────────────────────
+   Design Tokens — LinguaAgents Visual System
+   ────────────────────────────────────────────── */
+
 :root {
+  /* Typography — geometric heading + readable body */
+  --font-heading: "Avenir Next", "Avenir", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Surfaces */
   --background: #f8fafc;
   --foreground: #0f172a;
+  --surface-primary: #ffffff;
+  --surface-secondary: #f8fafc;
+  --surface-elevated: #ffffff;
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #ffffff;
+
+  /* Interactive */
+  --interactive-primary: #4f46e5;
+  --interactive-hover: #4338ca;
+  --interactive-muted: #eef2ff;
+
+  /* Module accent colors */
+  --module-conversation: #3b82f6;
+  --module-lesson: #10b981;
+  --module-exercise: #f97316;
+  --module-vocabulary: #14b8a6;
+  --module-culture: #f43f5e;
+  --module-assessment: #8b5cf6;
+
+  /* Gamification */
+  --xp-color: #f59e0b;
+  --streak-color: #f97316;
+  --achievement-color: #fbbf24;
+  --mastery-color: #10b981;
+
+  /* Radius scale */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
 }
 
 @theme inline {
@@ -13,11 +62,17 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
 }
 
-/* Custom scrollbar */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* ──────────────────────────────────────────────
+   Custom scrollbar
+   ────────────────────────────────────────────── */
+
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -35,7 +90,10 @@ body {
   background: #94a3b8;
 }
 
-/* Smooth transitions for page navigations */
+/* ──────────────────────────────────────────────
+   Page transitions
+   ────────────────────────────────────────────── */
+
 main {
   animation: fadeIn 0.3s ease-out;
 }
@@ -49,4 +107,38 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ──────────────────────────────────────────────
+   Reduced motion support
+   ────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Interactive element press feedback
+   ────────────────────────────────────────────── */
+
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.98);
+}
+
+/* ──────────────────────────────────────────────
+   Focus ring standardization
+   ────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }

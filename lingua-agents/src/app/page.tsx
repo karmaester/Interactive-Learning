@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, BookOpen, MessageCircle, Brain, Globe } from "lucide-react";
+import { ArrowRight, BookOpen, MessageCircle, Brain } from "lucide-react";
 import { LanguageSelector } from "@/components/language-selector";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/stores/user-store";
@@ -11,6 +11,7 @@ import type { Language } from "@/lib/types";
 import { LANGUAGE_CONFIG } from "@/lib/types";
 import { Avatar } from "@/components/characters/avatar";
 import { OnboardingFlow } from "@/components/onboarding-flow";
+import { Logo, LogoAnimated } from "@/components/ui/logo";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -57,13 +58,13 @@ export default function LandingPage() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <Globe className="w-8 h-8 text-indigo-600" />
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900">
+          <div className="flex flex-col items-center gap-4 mb-6">
+            <LogoAnimated />
+            <h1 className="text-4xl md:text-5xl font-extrabold font-[family-name:var(--font-heading)] text-slate-900 tracking-tight">
               Lingua<span className="text-indigo-600">Agents</span>
             </h1>
           </div>
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
             Learn languages with AI tutors that adapt to your level.
             Practice conversation, master grammar, and build vocabulary — all
             powered by a multi-agent AI system.
@@ -75,7 +76,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 mb-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 mb-16"
         >
           {[
             {
@@ -99,17 +100,17 @@ export default function LandingPage() {
           ].map((feature) => (
             <div
               key={feature.title}
-              className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm"
+              className="bg-[var(--surface-primary)] rounded-[var(--radius-lg)] p-5 border border-slate-100 shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all duration-200"
             >
               <div
-                className={`w-10 h-10 rounded-xl ${feature.color} flex items-center justify-center mb-3`}
+                className={`w-10 h-10 rounded-[var(--radius-md)] ${feature.color} flex items-center justify-center mb-3`}
               >
                 <feature.icon className="w-5 h-5" />
               </div>
-              <h3 className="font-semibold text-slate-800 mb-1">
+              <h3 className="font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-1">
                 {feature.title}
               </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                 {feature.desc}
               </p>
             </div>
@@ -137,7 +138,7 @@ export default function LandingPage() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => handleContinue(lang)}
-                    className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-5 py-3 hover:border-indigo-300 hover:bg-indigo-50/50 transition-colors cursor-pointer"
+                    className="flex items-center gap-3 bg-[var(--surface-primary)] border border-slate-200 rounded-[var(--radius-lg)] px-5 py-3 hover:border-indigo-300 hover:bg-indigo-50/50 hover:shadow-[var(--shadow-md)] transition-all duration-200 cursor-pointer"
                   >
                     <Avatar language={lang} expression="neutral" size="sm" />
                     <div className="text-left">
@@ -163,7 +164,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">
+          <h2 className="text-xl font-semibold font-[family-name:var(--font-heading)] text-slate-800 mb-2">
             {existingProfiles.length > 0
               ? "Or start a new language"
               : "Choose your language"}
